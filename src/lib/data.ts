@@ -7,17 +7,19 @@ export interface Playlist {
   color: (typeof colors)[keyof typeof colors];
   cover: string;
   artists: string[];
+  tipo: string;
 }
 
 export const playlists: Playlist[] = [
   {
     id: '1',
     albumId: 1,
-    title: "Hibrid Theory",
+    title: "Hybrid Theory",
     color: colors.yellow,
     cover:
       "https://www.sopitas.com/wp-content/uploads/2020/10/hybrid-theory.jpeg",
     artists: ["Linkin Park"],
+    tipo: 'Album'
   },
   {
     id: '2',
@@ -27,6 +29,7 @@ export const playlists: Playlist[] = [
     cover:
       "https://vinyl.lofirecords.com/cdn/shop/files/2amsynth-vinyl.png?v=1693312187",
     artists: ["Kupla", "Blue Fox"],
+    tipo: 'Album'
   },
   {
     id: '3',
@@ -36,6 +39,7 @@ export const playlists: Playlist[] = [
     cover:
       "https://f4.bcbits.com/img/a1435058381_65.jpg",
     artists: ["Tenno", "xander", "Team Astro"],
+    tipo: 'Album'
   },
   {
     id: '4',
@@ -45,6 +49,7 @@ export const playlists: Playlist[] = [
     cover:
       "https://f4.bcbits.com/img/a1962013209_16.jpg",
     artists: ["Raimu", "Yasumu"],
+    tipo: 'Album'
   },
   {
     id: '5',
@@ -54,6 +59,7 @@ export const playlists: Playlist[] = [
     cover:
       "https://f4.bcbits.com/img/a2793859494_16.jpg",
     artists: ["Chau Saura", "amies", "kyu"],
+    tipo: 'Album'
   },
   {
     id: '6',
@@ -63,6 +69,7 @@ export const playlists: Playlist[] = [
     cover:
       "https://f4.bcbits.com/img/a0363730459_16.jpg",
     artists: ["WFS", "Nadav Cohen"],
+    tipo: 'Album'
   },
 ];
 
@@ -78,8 +85,6 @@ export const sidebarPlaylists = playlists.map((item) => ({
 
 export const allPlaylists = [
   ...playlists,
-  ...morePlaylists,
-  ...sidebarPlaylists,
 ]
 
 export interface Song {
@@ -90,6 +95,7 @@ export interface Song {
   artists: string[];
   album: string;
   duration: string;
+  tipo: string;
 }
 
 export const songs: Song[] = [
@@ -99,8 +105,9 @@ export const songs: Song[] = [
     "title": "Papercut",
     "image": `https://www.sopitas.com/wp-content/uploads/2020/10/hybrid-theory.jpeg`,
     "artists": ["Linkin Park"],
-    "album": "Hibrid Theory",
-    "duration": "3:12"
+    "album": "Hybrid Theory",
+    "duration": "3:12",
+    "tipo": 'Cancion'
   },
   {
     "id": 2,
@@ -108,8 +115,9 @@ export const songs: Song[] = [
     "title": "One Step Closer",
     "image": `https://www.sopitas.com/wp-content/uploads/2020/10/hybrid-theory.jpeg`,
     "artists": ["Linkin Park"],
-    "album": "Hibrid Theory",
-    "duration": "2:37"
+    "album": "Hybrid Theory",
+    "duration": "2:37",
+    "tipo": 'Cancion'
   },
   {
     "id": 3,
@@ -117,8 +125,9 @@ export const songs: Song[] = [
     "title": "With You",
     "image": `https://www.sopitas.com/wp-content/uploads/2020/10/hybrid-theory.jpeg`,
     "artists": ["Linkin Park"],
-    "album": "Hibrid Theory",
-    "duration": "3:24"
+    "album": "Hybrid Theory",
+    "duration": "3:24",
+    "tipo": 'Cancion'
   },
   {
     "id": 4,
@@ -126,8 +135,9 @@ export const songs: Song[] = [
     "title": "Crawling",
     "image": `https://www.sopitas.com/wp-content/uploads/2020/10/hybrid-theory.jpeg`,
     "artists": ["Linkin Park"],
-    "album": "Hibrid Theory",
-    "duration": "3:28"
+    "album": "Hybrid Theory",
+    "duration": "3:28",
+    "tipo": 'Cancion'
   },
   {
     "id": 5,
@@ -135,8 +145,9 @@ export const songs: Song[] = [
     "title": "By Myself",
     "image": `https://www.sopitas.com/wp-content/uploads/2020/10/hybrid-theory.jpeg`,
     "artists": ["Linkin Park"],
-    "album": "Hibrid Theory",
-    "duration": "3:10"
+    "album": "Hybrid Theory",
+    "duration": "3:10",
+    "tipo": 'Cancion'
   },
   {
     "id": 1,
@@ -145,7 +156,8 @@ export const songs: Song[] = [
     "image": `https://vinyl.lofirecords.com/cdn/shop/files/2amsynth-vinyl.png?v=1693312187`,
     "artists": ["Urban Nocturne"],
     "album": "Midnight Tales",
-    "duration": "3:40"
+    "duration": "3:40",
+    "tipo": 'Cancion'
   },
   {
     "id": 2,
@@ -154,7 +166,8 @@ export const songs: Song[] = [
     "image": `https://vinyl.lofirecords.com/cdn/shop/files/2amsynth-vinyl.png?v=1693312187`,
     "artists": ["Urban Nocturne"],
     "album": "Midnight Tales",
-    "duration": "3:20"
+    "duration": "3:20",
+    "tipo": 'Cancion'
   },
   {
     "id": 3,
@@ -163,7 +176,8 @@ export const songs: Song[] = [
     "image": `https://vinyl.lofirecords.com/cdn/shop/files/2amsynth-vinyl.png?v=1693312187`,
     "artists": ["Urban Nocturne"],
     "album": "Midnight Tales",
-    "duration": "3:50"
+    "duration": "3:50",
+    "tipo": 'Cancion'
   },
   {
     "id": 4,
@@ -172,7 +186,8 @@ export const songs: Song[] = [
     "image": `https://vinyl.lofirecords.com/cdn/shop/files/2amsynth-vinyl.png?v=1693312187`,
     "artists": ["Urban Nocturne"],
     "album": "Midnight Tales",
-    "duration": "3:30"
+    "duration": "3:30",
+    "tipo": 'Cancion'
   },
   {
     "id": 5,
@@ -181,7 +196,8 @@ export const songs: Song[] = [
     "image": `https://vinyl.lofirecords.com/cdn/shop/files/2amsynth-vinyl.png?v=1693312187`,
     "artists": ["Urban Nocturne"],
     "album": "Midnight Tales",
-    "duration": "4:20"
+    "duration": "4:20",
+    "tipo": 'Cancion'
   },
   {
     "id": 1,
@@ -190,7 +206,8 @@ export const songs: Song[] = [
     "image": `https://f4.bcbits.com/img/a1435058381_65.jpg`,
     "artists": ["Tenno"],
     "album": "Study Session",
-    "duration": "3:40"
+    "duration": "3:40",
+    "tipo": 'Cancion'
   },
   {
     "id": 2,
@@ -199,7 +216,8 @@ export const songs: Song[] = [
     "image": `https://f4.bcbits.com/img/a1435058381_65.jpg`,
     "artists": ["Tenno"],
     "album": "Study Session",
-    "duration": "3:20"
+    "duration": "3:20",
+    "tipo": 'Cancion'
   },
   {
     "id": 3,
@@ -208,7 +226,8 @@ export const songs: Song[] = [
     "image": `https://f4.bcbits.com/img/a1435058381_65.jpg`,
     "artists": ["Tenno"],
     "album": "Study Session",
-    "duration": "2:40"
+    "duration": "2:40",
+    "tipo": 'Cancion'
   },
   {
     "id": 4,
@@ -217,7 +236,8 @@ export const songs: Song[] = [
     "image": `https://f4.bcbits.com/img/a1435058381_65.jpg`,
     "artists": ["Tenno"],
     "album": "Study Session",
-    "duration": "3:10"
+    "duration": "3:10",
+    "tipo": 'Cancion'
   },
   {
     "id": 5,
@@ -226,7 +246,8 @@ export const songs: Song[] = [
     "image": `https://f4.bcbits.com/img/a1435058381_65.jpg`,
     "artists": ["Tenno"],
     "album": "Study Session",
-    "duration": "2:10"
+    "duration": "2:10",
+    "tipo": 'Cancion'
   },
   {
     "id": 1,
@@ -235,7 +256,8 @@ export const songs: Song[] = [
     "image": "https://f4.bcbits.com/img/a1962013209_16.jpg",
     "artists": ["Tenno"],
     "album": "Study Session",
-    "duration": "3:40"
+    "duration": "3:40",
+    "tipo": 'Cancion'
   },
   {
     "id": 2,
@@ -244,7 +266,8 @@ export const songs: Song[] = [
     "image": "https://f4.bcbits.com/img/a1962013209_16.jpg",
     "artists": ["Tenno"],
     "album": "Study Session",
-    "duration": "3:20"
+    "duration": "3:20",
+    "tipo": 'Cancion'
   },
   {
     "id": 3,
@@ -253,7 +276,8 @@ export const songs: Song[] = [
     "image": "https://f4.bcbits.com/img/a1962013209_16.jpg",
     "artists": ["Tenno"],
     "album": "Study Session",
-    "duration": "2:40"
+    "duration": "2:40",
+    "tipo": 'Cancion'
   },
   {
     "id": 4,
@@ -262,7 +286,8 @@ export const songs: Song[] = [
     "image": "https://f4.bcbits.com/img/a1962013209_16.jpg",
     "artists": ["Tenno"],
     "album": "Study Session",
-    "duration": "3:10"
+    "duration": "3:10",
+    "tipo": 'Cancion'
   },
   {
     "id": 5,
@@ -271,7 +296,8 @@ export const songs: Song[] = [
     "image": "https://f4.bcbits.com/img/a1962013209_16.jpg",
     "artists": ["Tenno"],
     "album": "Study Session",
-    "duration": "2:10"
+    "duration": "2:10",
+    "tipo": 'Cancion'
   },
   {
     "id": 1,
@@ -280,7 +306,8 @@ export const songs: Song[] = [
     "image": "https://f4.bcbits.com/img/a2793859494_16.jpg",
     "artists": ["LoFi Dreamer"],
     "album": "Chill Lo-Fi Music",
-    "duration": "3:12"
+    "duration": "3:12",
+    "tipo": 'Cancion'
   },
   {
     "id": 2,
@@ -289,7 +316,8 @@ export const songs: Song[] = [
     "image": "https://f4.bcbits.com/img/a2793859494_16.jpg",
     "artists": ["LoFi Dreamer"],
     "album": "Chill Lo-Fi Music",
-    "duration": "4:07"
+    "duration": "4:07",
+    "tipo": 'Cancion'
   },
   {
     "id": 3,
@@ -298,7 +326,8 @@ export const songs: Song[] = [
     "image": "https://f4.bcbits.com/img/a2793859494_16.jpg",
     "artists": ["LoFi Dreamer"],
     "album": "Chill Lo-Fi Music",
-    "duration": "3:50"
+    "duration": "3:50",
+    "tipo": 'Cancion'
   },
   {
     "id": 4,
@@ -307,7 +336,8 @@ export const songs: Song[] = [
     "image": "https://f4.bcbits.com/img/a2793859494_16.jpg",
     "artists": ["LoFi Dreamer"],
     "album": "Chill Lo-Fi Music",
-    "duration": "3:30"
+    "duration": "3:30",
+    "tipo": 'Cancion'
   },
   {
     "id": 5,
@@ -316,6 +346,7 @@ export const songs: Song[] = [
     "image": "https://f4.bcbits.com/img/a2793859494_16.jpg",
     "artists": ["LoFi Dreamer"],
     "album": "Chill Lo-Fi Music",
-    "duration": "4:20"
+    "duration": "4:20",
+    "tipo": 'Cancion'
   },
 ]
