@@ -3,7 +3,7 @@
   const currentHour = currentTime.getHours()
 
   let greeting = ""
-  console.log(`Hora actual: ${currentHour}`);
+ 
   if (currentHour > 6 && currentHour < 12) {
     greeting = "Buenos días"
   } else if (currentHour > 12 && currentHour < 6) {

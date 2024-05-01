@@ -3,6 +3,12 @@ import Layout from "../layouts/Layout.astro"
 import PlayListItemCard from "@/components/PlayListItemCard.astro"
 import { playlists } from "@/lib/data"
 import Greeting from "@/components/Greeting.svelte"
+import {db, Albumns, Songs} from 'astro:db';
+/*
+const Albumn = await db.select().from(Albumns);
+console.log("estamoos aqui")
+Albumn.map(album => {console.log(album)})
+*/
 ---
 
 <Layout title="Spotify Clone">
