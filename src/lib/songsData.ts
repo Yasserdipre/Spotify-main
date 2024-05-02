@@ -1,12 +1,47 @@
 import { colors } from "./color";
+import type { Albumn } from "./dataType";
+const ImgURL = {
+  RomeoSantos:{
+    FormulaVol1: {
+      image: "https://i.discogs.com/mvKDxiuJX_n7pTHBaaobYu5vxtX08L8NyoDEX4xxUdc/rs:fit/g:sm/q:90/h:220/w:220/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTU3MzEx/MzEtMTQwMTEyOTkz/MS05Mzc3LmpwZWc.jpeg"
+    }
+  },
+  LinkinPark:{
+    HybridTheory: {
+      image: "https://www.sopitas.com/wp-content/uploads/2020/10/hybrid-theory.jpeg"
+    }
+  },
+  UrbanNocturne:{
+    MidnightTales:{
+      image: "https://vinyl.lofirecords.com/cdn/shop/files/2amsynth-vinyl.png?v=1693312187"
+    }
+  },
+  Tenno:{
+    StudySession:{
+      image: "https://f4.bcbits.com/img/a1435058381_65.jpg"
+    }
+  },
+  Raimu:{
+    BlueNoteStudyTime: {
+      image: "https://f4.bcbits.com/img/a1962013209_16.jpg"
+    }
+  },
+  LoFiDreamer:{
+    ChillLoFiMusic:{
+      image: "https://f4.bcbits.com/img/a2793859494_16.jpg"
+    }
+  }
+}
 
-export const AlbumnData = [
+
+
+export const AlbumnData: Albumn[] = [
     {
       id: "",
       title: "Hybrid Theory",
       color: colors.yellow,
-      cover:
-        "https://www.sopitas.com/wp-content/uploads/2020/10/hybrid-theory.jpeg",
+      cover:ImgURL.LinkinPark.HybridTheory.image
+        ,
       artists: {
         principal: "Linkin Park"
     },
@@ -17,8 +52,7 @@ export const AlbumnData = [
       id: "",
       title: "Midnight Tales",
       color: colors.green,
-      cover:
-        "https://vinyl.lofirecords.com/cdn/shop/files/2amsynth-vinyl.png?v=1693312187",
+      cover: ImgURL.UrbanNocturne.MidnightTales.image,
       artists: {
         principal: "Urban Nocturne"
     },
@@ -29,7 +63,7 @@ export const AlbumnData = [
       id: "",
       title: "Study Session",
       color: colors.rose,
-      cover: "https://f4.bcbits.com/img/a1435058381_65.jpg",
+      cover: ImgURL.Tenno.StudySession.image,
       artists: {
         principal: "Tenno"
     },
@@ -40,7 +74,7 @@ export const AlbumnData = [
       id: "",
       title: "Blue Note Study Time",
       color: colors.blue,
-      cover: "https://f4.bcbits.com/img/a1962013209_16.jpg",
+      cover: ImgURL.Raimu.BlueNoteStudyTime.image,
       artists: {
         principal: "Raimu"
     },
@@ -51,13 +85,24 @@ export const AlbumnData = [
       id: "",
       title: "Chill Lo-Fi Music",
       color: colors.purple,
-      cover: "https://f4.bcbits.com/img/a2793859494_16.jpg",
+      cover: ImgURL.LoFiDreamer.ChillLoFiMusic.image,
       artists: {
         principal: "LoFi Dreamer"
     },
       artistId: "",
       tipo: "Album",
     },
+    {
+      id: "",
+      title: "Formula, Vol. 1",
+      color: colors.yellow,
+      cover: ImgURL.RomeoSantos.FormulaVol1.image,
+      artists: {
+        principal: "Romeo Santos"
+      },
+      artistId: "",
+      tipo: "Album"
+    }
     
   ];
   
@@ -78,7 +123,7 @@ export const AlbumnData = [
       id: "",
       albumId: "",
       title: "Papercut",
-      image: `https://www.sopitas.com/wp-content/uploads/2020/10/hybrid-theory.jpeg`,
+      image: ImgURL.LinkinPark.HybridTheory.image,
       artists: {
         principal: "Linkin Park"
       },
@@ -90,7 +135,7 @@ export const AlbumnData = [
       id: "",
       albumId: "",
       title: "One Step Closer",
-      image: `https://www.sopitas.com/wp-content/uploads/2020/10/hybrid-theory.jpeg`,
+      image: ImgURL.LinkinPark.HybridTheory.image,
       artists: {
         principal: "Linkin Park"
       },
@@ -102,7 +147,7 @@ export const AlbumnData = [
       id: "",
       albumId: "",
       title: "With You",
-      image: `https://www.sopitas.com/wp-content/uploads/2020/10/hybrid-theory.jpeg`,
+      image: ImgURL.LinkinPark.HybridTheory.image,
       artists: {
         principal: "Linkin Park"
       },
@@ -114,7 +159,7 @@ export const AlbumnData = [
       id: "",
       albumId: "",
       title: "Crawling",
-      image: `https://www.sopitas.com/wp-content/uploads/2020/10/hybrid-theory.jpeg`,
+      image: ImgURL.LinkinPark.HybridTheory.image,
       artists: {
         principal: "Linkin Park"
       },
@@ -126,7 +171,7 @@ export const AlbumnData = [
       id: "",
       albumId: "",
       title: "By Myself",
-      image: `https://www.sopitas.com/wp-content/uploads/2020/10/hybrid-theory.jpeg`,
+      image: ImgURL.LinkinPark.HybridTheory.image,
       artists: {
         principal: "Linkin Park"
       },
@@ -138,7 +183,7 @@ export const AlbumnData = [
       id: "",
       albumId: "",
       title: "Silent Rain",
-      image: `https://vinyl.lofirecords.com/cdn/shop/files/2amsynth-vinyl.png?v=1693312187`,
+      image: ImgURL.UrbanNocturne.MidnightTales.image,
       artists: {
         principal: "Urban Nocturne"
       },
@@ -150,7 +195,7 @@ export const AlbumnData = [
       id: "",
       albumId: "",
       title: "Lost Pages",
-      image: `https://vinyl.lofirecords.com/cdn/shop/files/2amsynth-vinyl.png?v=1693312187`,
+      image: ImgURL.UrbanNocturne.MidnightTales.image,
       artists: {
         principal: "Urban Nocturne"
       },
@@ -162,7 +207,7 @@ export const AlbumnData = [
       id: "",
       albumId: "",
       title: "Midnight Tales",
-      image: `https://vinyl.lofirecords.com/cdn/shop/files/2amsynth-vinyl.png?v=1693312187`,
+      image: ImgURL.UrbanNocturne.MidnightTales.image,
       artists: {
         principal: "Urban Nocturne"
       },
@@ -174,7 +219,7 @@ export const AlbumnData = [
       id: "",
       albumId: "",
       title: "City Lights",
-      image: `https://vinyl.lofirecords.com/cdn/shop/files/2amsynth-vinyl.png?v=1693312187`,
+      image: ImgURL.UrbanNocturne.MidnightTales.image,
       artists: {
         principal: "Urban Nocturne"
       },
@@ -186,7 +231,7 @@ export const AlbumnData = [
       id: "",
       albumId: "",
       title: "Night Drive",
-      image: `https://vinyl.lofirecords.com/cdn/shop/files/2amsynth-vinyl.png?v=1693312187`,
+      image: ImgURL.UrbanNocturne.MidnightTales.image,
       artists: {
         principal: "Urban Nocturne"
       },
@@ -198,7 +243,7 @@ export const AlbumnData = [
       id: "",
       albumId: "",
       title: "Lunar",
-      image: `https://f4.bcbits.com/img/a1435058381_65.jpg`,
+      image: ImgURL.Tenno.StudySession.image,
       artists: {
         principal: "Tenno"
       },
@@ -210,7 +255,7 @@ export const AlbumnData = [
       id: "",
       albumId: "",
       title: "Go go go!",
-      image: `https://f4.bcbits.com/img/a1435058381_65.jpg`,
+      image: ImgURL.Tenno.StudySession.image,
       artists: {
         principal: "Tenno"
       },
@@ -222,7 +267,7 @@ export const AlbumnData = [
       id: "",
       albumId: "",
       title: "Keep focus!",
-      image: `https://f4.bcbits.com/img/a1435058381_65.jpg`,
+      image: ImgURL.Tenno.StudySession.image,
       artists: {
         principal: "Tenno"
       },
@@ -234,7 +279,7 @@ export const AlbumnData = [
       id: "",
       albumId: "",
       title: "JavaScript is the way",
-      image: `https://f4.bcbits.com/img/a1435058381_65.jpg`,
+      image: ImgURL.Tenno.StudySession.image,
       artists: {
         principal: "Tenno"
       },
@@ -246,7 +291,7 @@ export const AlbumnData = [
       id: "",
       albumId: "",
       title: "No more TypeScript for me",
-      image: `https://f4.bcbits.com/img/a1435058381_65.jpg`,
+      image: ImgURL.Tenno.StudySession.image,
       artists: {
         principal: "Tenno"
       },
@@ -257,8 +302,8 @@ export const AlbumnData = [
     {
       id: "",
       albumId: "",
-      title: "Lunar",
-      image: "https://f4.bcbits.com/img/a1962013209_16.jpg",
+      title: "Sun",
+      image: ImgURL.Raimu.BlueNoteStudyTime.image,
       artists: {
         principal: "Raimu"
       },
@@ -269,8 +314,8 @@ export const AlbumnData = [
     {
       id: "",
       albumId: "",
-      title: "Go go go!",
-      image: "https://f4.bcbits.com/img/a1962013209_16.jpg",
+      title: "In my way",
+      image: ImgURL.Raimu.BlueNoteStudyTime.image,
       artists: {
         principal: "Raimu"
       },
@@ -281,8 +326,8 @@ export const AlbumnData = [
     {
       id: "",
       albumId: "",
-      title: "Keep focus!",
-      image: "https://f4.bcbits.com/img/a1962013209_16.jpg",
+      title: "Nocture",
+      image: ImgURL.Raimu.BlueNoteStudyTime.image,
       artists: {
         principal: "Raimu"
       },
@@ -293,8 +338,8 @@ export const AlbumnData = [
     {
       id: "",
       albumId: "",
-      title: "JavaScript is the way",
-      image: "https://f4.bcbits.com/img/a1962013209_16.jpg",
+      title: "Beautiful Thing",
+      image: ImgURL.Raimu.BlueNoteStudyTime.image,
       artists: {
         principal: "Raimu"
       },
@@ -305,8 +350,8 @@ export const AlbumnData = [
     {
       id: "",
       albumId: "",
-      title: "No more TypeScript for me",
-      image: "https://f4.bcbits.com/img/a1962013209_16.jpg",
+      title: "Final Game",
+      image: ImgURL.Raimu.BlueNoteStudyTime.image,
       artists: {
         principal: "Raimu"
       },
@@ -318,7 +363,7 @@ export const AlbumnData = [
       id: "",
       albumId: "",
       title: "Moonlit Walk",
-      image: "https://f4.bcbits.com/img/a2793859494_16.jpg",
+      image: ImgURL.LoFiDreamer.ChillLoFiMusic.image,
       artists: {
         principal: "LoFi Dreamer"
       },
@@ -330,7 +375,7 @@ export const AlbumnData = [
       id: "",
       albumId: "",
       title: "Coffee Daze",
-      image: "https://f4.bcbits.com/img/a2793859494_16.jpg",
+      image: ImgURL.LoFiDreamer.ChillLoFiMusic.image,
       artists: {
         principal: "LoFi Dreamer"
       },
@@ -342,7 +387,7 @@ export const AlbumnData = [
       id: "",
       albumId: "",
       title: "Skyline Serenade",
-      image: "https://f4.bcbits.com/img/a2793859494_16.jpg",
+      image: ImgURL.LoFiDreamer.ChillLoFiMusic.image,
       artists: {
         principal: "LoFi Dreamer"
       },
@@ -354,7 +399,7 @@ export const AlbumnData = [
       id: "",
       albumId: "",
       title: "Urban Echoes",
-      image: "https://f4.bcbits.com/img/a2793859494_16.jpg",
+      image: ImgURL.LoFiDreamer.ChillLoFiMusic.image,
       artists: {
         principal: "LoFi Dreamer"
       },
@@ -366,12 +411,228 @@ export const AlbumnData = [
       id: "",
       albumId: "",
       title: "Night's End",
-      image: "https://f4.bcbits.com/img/a2793859494_16.jpg",
+      image: ImgURL.LoFiDreamer.ChillLoFiMusic.image,
       artists: {
         principal: "LoFi Dreamer"
       },
       album: "Chill Lo-Fi Music",
       duration: "4:20",
       tipo: 'Cancion'
-    }
+    },
+    {
+      id: "",
+      albumId: "",
+      title: "Intro (Fórmula)",
+      image: ImgURL.RomeoSantos.FormulaVol1.image,
+      artists: {
+        principal: "Romeo Santos"
+      },
+      album: "Formula, Vol. 1",
+      duration: "2:14",
+      tipo: "Cancion"
+    },
+    {
+      id: "",
+      albumId: "",
+      title: "La Diabla",
+      image: ImgURL.RomeoSantos.FormulaVol1.image,
+      artists: {
+        principal: "Romeo Santos"
+      },
+      album: "Formula, Vol. 1",
+      duration: "4:02",
+      tipo: "Cancion"
+    },
+    {
+      id: "",
+      albumId: "",
+      title: "Que Se Mueran",
+      image: ImgURL.RomeoSantos.FormulaVol1.image,
+      artists: {
+        principal: "Romeo Santos"
+      },
+      album: "Formula, Vol. 1",
+      duration: "4:14",
+      tipo: "Cancion"
+    },
+    {
+      id: "",
+      albumId: "",
+      title: "Llévame Contigo",
+      image: ImgURL.RomeoSantos.FormulaVol1.image,
+      artists: {
+        principal: "Romeo Santos"
+      },
+      album: "Formula, Vol. 1",
+      duration: "3:49",
+      tipo: "Cancion"
+    },
+    {
+      id: "",
+      albumId: "",
+      title: "La Diabla - Mi Santa",
+      image: ImgURL.RomeoSantos.FormulaVol1.image,
+      artists: {
+        principal: "Romeo Santos"
+      },
+      album: "Formula, Vol. 1",
+      duration: "5:52",
+      tipo: "Cancion"
+    },
+    {
+      id: "",
+      albumId: "",
+      title: "Promise",
+      image: ImgURL.RomeoSantos.FormulaVol1.image,
+      artists: {
+        principal: "Romeo Santos"
+      },
+      album: "Formula, Vol. 1",
+      duration: "5:32",
+      tipo: "Cancion"
+    },
+    {
+      id: "",
+      albumId: "",
+      title: "Magia Negra",
+      image: ImgURL.RomeoSantos.FormulaVol1.image,
+      artists: {
+        principal: "Romeo Santos"
+      },
+      album: "Formula, Vol. 1",
+      duration: "3:47",
+      tipo: "Cancion"
+    },
+    {
+      id: "",
+      albumId: "",
+      title: "Soberbio",
+      image: ImgURL.RomeoSantos.FormulaVol1.image,
+      artists: {
+        principal: "Romeo Santos"
+      },
+      album: "Formula, Vol. 1",
+      duration: "4:05",
+      tipo: "Cancion"
+    },
+    {
+      id: "",
+      albumId: "",
+      title: "Skit (La Discusión)",
+      image: ImgURL.RomeoSantos.FormulaVol1.image,
+      artists: {
+        principal: "Romeo Santos"
+      },
+      album: "Formula, Vol. 1",
+      duration: "1:36",
+      tipo: "Cancion"
+    },
+    {
+      id: "",
+      albumId: "",
+      title: "Debate De 4",
+      image: ImgURL.RomeoSantos.FormulaVol1.image,
+      artists: {
+        principal: "Romeo Santos"
+      },
+      album: "Formula, Vol. 1",
+      duration: "4:41",
+      tipo: "Cancion"
+    },
+    {
+      id: "",
+      albumId: "",
+      title: "Rival",
+      image: ImgURL.RomeoSantos.FormulaVol1.image,
+      artists: {
+        principal: "Romeo Santos"
+      },
+      album: "Formula, Vol. 1",
+      duration: "4:38",
+      tipo: "Cancion"
+    },
+    {
+      id: "",
+      albumId: "",
+      title: "La Bella Y La Bestia",
+      image: ImgURL.RomeoSantos.FormulaVol1.image,
+      artists: {
+        principal: "Romeo Santos"
+      },
+      album: "Formula, Vol. 1",
+      duration: "3:58",
+      tipo: "Cancion"
+    },
+    {
+      id: "",
+      albumId: "",
+      title: "You",
+      image: ImgURL.RomeoSantos.FormulaVol1.image,
+      artists: {
+        principal: "Romeo Santos"
+      },
+      album: "Formula, Vol. 1",
+      duration: "4:22",
+      tipo: "Cancion"
+    },
+    {
+      id: "",
+      albumId: "",
+      title: "All Aboard",
+      image: ImgURL.RomeoSantos.FormulaVol1.image,
+      artists: {
+        principal: "Romeo Santos"
+      },
+      album: "Formula, Vol. 1",
+      duration: "4:39",
+      tipo: "Cancion"
+    },
+    {
+      id: "",
+      albumId: "",
+      title: "Aleluya (Cover Audio Video)",
+      image: ImgURL.RomeoSantos.FormulaVol1.image,
+      artists: {
+        principal: "Romeo Santos"
+      },
+      album: "Formula, Vol. 1",
+      duration: "3:29",
+      tipo: "Cancion"
+    },
+    {
+      id: "",
+      albumId: "",
+      title: "Malevo",
+      image: ImgURL.RomeoSantos.FormulaVol1.image,
+      artists: {
+        principal: "Romeo Santos"
+      },
+      album: "Formula, Vol. 1",
+      duration: "3:38",
+      tipo: "Cancion"
+    },
+    {
+      id: "",
+      albumId: "",
+      title: "Vale La Pena El Placer",
+      image: ImgURL.RomeoSantos.FormulaVol1.image,
+      artists: {
+        principal: "Romeo Santos"
+      },
+      album: "Formula, Vol. 1",
+      duration: "3:09",
+      tipo: "Cancion"
+    },
+    {
+      id: "",
+      albumId: "",
+      title: "Outro",
+      image: ImgURL.RomeoSantos.FormulaVol1.image,
+      artists: {
+        principal: "Romeo Santos"
+      },
+      album: "Formula, Vol. 1",
+      duration: "1:59",
+      tipo: "Cancion"
+    },
 ]

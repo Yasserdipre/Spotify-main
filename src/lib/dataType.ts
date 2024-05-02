@@ -1,6 +1,8 @@
 
 
 export type Data = Album | Song;
+export type Albumn = Album;
+export type SongProps = Song
  export type SQL =  SQLiteTable[] | { [key: string]: any };
 
 interface Album {

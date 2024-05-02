@@ -29,10 +29,9 @@ export default async function seed() {
       }));
   
       const songsWithIdsAndAlbumnId = await Promise.all(promises);
-
+      console.log(songsWithIdsAndAlbumnId)
       try {
-        let insert = insertDB(songsWithIdsAndAlbumnId, Songs)
-        console.log("Songs inserted successfully");
+        let insert = await insertDB(songsWithIdsAndAlbumnId, Songs)
       } catch (error) {
         console.error("Error inserting Songs: ", error);
         return; 

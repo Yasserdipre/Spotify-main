@@ -2,13 +2,17 @@
 import Layout from "../layouts/Layout.astro"
 import PlayListItemCard from "@/components/PlayListItemCard.astro"
 import { playlists } from "@/lib/data"
+
 import Greeting from "@/components/Greeting.svelte"
-import {db, Albumns, Songs} from 'astro:db';
-/*
+import {db, Albumns} from 'astro:db';
+
 const Albumn = await db.select().from(Albumns);
-console.log("estamoos aqui")
+console.log(Albumn)
+/*
 Albumn.map(album => {console.log(album)})
 */
+
+
 ---
 
 <Layout title="Spotify Clone">
@@ -21,7 +25,7 @@ Albumn.map(album => {console.log(album)})
     <div class="relative z-10 px-6 pt-10">
       <Greeting />
       <div class="flex flex-wrap mt-6 gap-4">
-        {playlists.map((playlist) => <PlayListItemCard playlist={playlist} />)}
+        {Albumn.map((Album) => <PlayListItemCard AlbumData={Album} />)}
       </div>
 
       <div

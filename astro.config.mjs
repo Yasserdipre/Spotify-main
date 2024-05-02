@@ -11,5 +11,8 @@ import db from "@astrojs/db";
 export default defineConfig({
   integrations: [tailwind(), svelte(), react(), vue(), db()],
   output: 'server',
-  adapter: vercel()
+  adapter: vercel(),
+  devToolbar: {
+    enabled: false
+  }
 });

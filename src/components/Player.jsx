@@ -29,22 +29,27 @@ export const NextSong = () => (
   
 
 const CurrentSong = ({ image, title, artists }) => {
+  
+  let artistsName =  null
+  if (artists != undefined){
+    artistsName = artists.principal
+  }
   return (
     <div
       className={`
-        flex items-center gap-5 relative
+        flex items-center gap-4 relative
         overflow-hidden
       `}>
-        <picture className="w-16 h-16 ml-4 mt-2 bg-zinc-800 rounded-md shadow-lg overflow-hidden">
+        <picture className="w-[64px] h-[64px] ml-4 mt-2 bg-zinc-800 rounded-md shadow-lg overflow-hidden">
           <img src={image} alt={title} />
         </picture>
 
-        <div className="flex flex-col">
+        <div className="flex flex-col w-[110px]">
           <h3 className="font-semibold text-sm block">
             {title}
           </h3>
           <span className="text-xs opacity-80">
-            {artists?.join(', ')}
+            {artistsName}
           </span>
         </div>
 
@@ -158,7 +163,7 @@ export function Player() {
   useEffect(() => {
     const { song, playlist, songs } = currentMusic;
     if (song) {
-      const src = `/music/${playlist?.id}/0${song.id}.mp3`;
+      const src = `/music/${playlist[0].artists.principal}/${playlist[0]?.title}/${song.title}.mp3`;
       audioRef.current.src = src;
       audioRef.current.volume = volume;
       audioRef.current.play();
@@ -198,6 +203,7 @@ export function Player() {
   
   const handleClickPrevious = () => {
     const { songs } = currentMusic;
+    console.log("Songs:")
     // Verificar si hay canciones en la lista de reproducción
     if (songs && songs.length > 0) {
       const currentIndex = songs.findIndex((s) => s.id === currentMusic.song.id);
@@ -214,7 +220,7 @@ export function Player() {
         <CurrentSong {...currentMusic.song} />
       </div>
 
-      <div className="grid place-content-center gap-4 flex-1">
+      <div className="grid place-content-center gap-2 flex-1">
         <div className="flex justify-center flex-col items-center">
           <div className="flex gap-3">
             <button className="" onClick={handleClickPrevious}>

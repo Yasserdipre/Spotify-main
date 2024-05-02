@@ -16,7 +16,8 @@ export const insertDB = async (Values : Data[], data : SQL ) => {
 
 
 export const getAlbumnId = async (name: string, artists : {[key: string]: string }) => {
-    try {
+  console.log(name)  
+  try {
       const album = await db.select({id: Albumns.id}).from(Albumns).where(and(eq(Albumns.title, name), eq(Albumns.artists, artists)));
       return album[0].id ? album[0].id : null ;
     } catch (error) {

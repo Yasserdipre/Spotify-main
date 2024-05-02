@@ -1,26 +1,34 @@
 import { useState } from 'react';
 import { usePlayerStore } from '@/store/playerStore';
 import React from 'react';
-import { type Song } from '@/lib/data';
+import type { SongProps } from '@/lib/dataType';
 
 interface Props {
-  songs: Song[];
+  songs: SongProps[];
 }
 
-const TableComponent: React.FC<Props> = ({ songs }) => {
-  const { setCurrentMusic, setIsPlaying, currentMusic } = usePlayerStore(state => state);
-  const [hoveredSong, setHoveredSong] = useState<Song | null>(null);
 
-  const handleButtonClick = (song: Song) => {
+const TableComponent: React.FC<Props> = ({ songs }) => {
+
+  const { setCurrentMusic, setIsPlaying, currentMusic } = usePlayerStore(state => state);
+  const [hoveredSong, setHoveredSong] = useState<SongProps | null>(null);
+
+  const handleButtonClick = (song: SongProps) => {
     const enlace = window.location.href;
-    const id = enlace.charAt(enlace.length - 1);
+    const id = enlace.split('/').pop();
 
     fetch(`/api/get-info-playlist.json?id=${id}`)
       .then(res => res.json())
       .then(data => {
         const { songs, playlist } = data;
-        setIsPlaying(true);
-        setCurrentMusic({ songs, playlist, song: songs[song.id - 1] });
+        const selectedSong : SongProps[] = songs.find((s: { id: string; }) => s.id === song.id);
+      
+        if (selectedSong) {
+          setIsPlaying(true);
+          setCurrentMusic({ songs, playlist, song: selectedSong });
+        } else {
+          console.error(`No se encontró ninguna canción con el ID ${song.id}`);
+        }
       });
   };
 
