@@ -1,39 +1,108 @@
 import { colors } from "./color";
-import type { Albumn } from "./dataType";
+import type { Albumn, Artist } from "./dataType";
 const ImgURL = {
   RomeoSantos:{
+    Perfil: {
+      cover: "https://media.allure.com/photos/630f8762dc98e4b891becbc6/16:9/w_2991,h_1682,c_limit/Romeo%20Santos%20Formula%20Vol%203%20Interview%201.jpg"
+    },
     FormulaVol1: {
       image: "https://i.discogs.com/mvKDxiuJX_n7pTHBaaobYu5vxtX08L8NyoDEX4xxUdc/rs:fit/g:sm/q:90/h:220/w:220/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTU3MzEx/MzEtMTQwMTEyOTkz/MS05Mzc3LmpwZWc.jpeg"
     }
   },
   LinkinPark:{
+    Perfil: {
+      cover: "https://i.pinimg.com/originals/ed/f1/9e/edf19eb48eb35eda013cd592107db530.jpg"
+    },
     HybridTheory: {
       image: "https://www.sopitas.com/wp-content/uploads/2020/10/hybrid-theory.jpeg"
     }
   },
   UrbanNocturne:{
+    Perfil: {
+      cover: "https://img.freepik.com/premium-photo/futuristic-nocturne-urban-bioluminescence-holographic-dreams_462685-1058.jpg"
+    },
     MidnightTales:{
       image: "https://vinyl.lofirecords.com/cdn/shop/files/2amsynth-vinyl.png?v=1693312187"
     }
   },
   Tenno:{
+    Perfil: {
+      cover: "https://pbs.twimg.com/media/GAywskXXoAAc5g-.jpg:large"
+    },
     StudySession:{
       image: "https://f4.bcbits.com/img/a1435058381_65.jpg"
     }
   },
   Raimu:{
+    Perfil: {
+      cover: "https://i.ytimg.com/vi/WO23Sl2t2OM/maxresdefault.jpg"
+    },
     BlueNoteStudyTime: {
       image: "https://f4.bcbits.com/img/a1962013209_16.jpg"
     }
   },
   LoFiDreamer:{
+    Perfil: {
+      cover: "https://i.ytimg.com/vi/UeeYeYngOpQ/maxresdefault.jpg?sqp=-oaymwEmCIAKENAF8quKqQMa8AEB-AH-CYACzgWKAgwIABABGHAgQihyMA8=&rs=AOn4CLBDc6mzGBfDWQX4-C1087phjO7qww"
+    },
     ChillLoFiMusic:{
       image: "https://f4.bcbits.com/img/a2793859494_16.jpg"
     }
   }
 }
 
+export const ArtistsData : Artist[] = [
+  {
+    id: "",
+    name: "Romeo Santos",
+    image: ImgURL.RomeoSantos.Perfil.cover,
+    listeners: 0,
+    genre: "Bachata",
+    tipo: "Artista"
+  },
+  {
+    id: "",
+    name: "Linkin Park",
+    image: ImgURL.LinkinPark.Perfil.cover,
+    listeners: 0,
+    genre: "Nu-Metal",
+    tipo: "Artista"
+  },
+  {
+    id: "",
+    name: "Urban Nocturne",
+    image: ImgURL.UrbanNocturne.Perfil.cover,
+    listeners: 0,
+    genre: "Electronic",
+    tipo: "Artista"
+  },
+  {
+    id: "",
+    name: "Tenno",
+    image: ImgURL.Tenno.Perfil.cover,
+    listeners: 0,
+    genre: "Electronic",
+    tipo: "Artista"
+  },
+  {
+    id: "",
+    name: "Raimu",
+    image: ImgURL.Raimu.Perfil.cover,
+    listeners: 0,
+    genre: "Electronic",
+    tipo: "Artista"
+  },
+  {
+    id: "",
+    name: "LoFi Dreamer",
+    image: ImgURL.LoFiDreamer.Perfil.cover,
+    listeners: 0,
+    genre: "Electronic",
+    tipo: "Artista"
+  },
 
+
+]
 
 export const AlbumnData: Albumn[] = [
     {

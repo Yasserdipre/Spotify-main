@@ -1,18 +1,27 @@
-import { allPlaylists, songs, Playlist, Song } from "@/lib/data";
+import { db, Artists, Albumns, Songs, like } from "astro:db";
 
 // Función para calcular la similitud de subcadenas
-function substringSimilarity(a: string, b: string): number {
+function substringSimilarity(a: string, b: string, type: string): number {
     const pairs: string[] = [];
     let score = 0;
-    for (let i = 0; i < a.length - 1; i++) {
+    let maxLength = Math.max(a.length, b.length);
+
+    for (let i = 0; i < maxLength - 1; i++) {
         const pair = a.slice(i, i + 2);
         const index = b.indexOf(pair);
+        
         if (index !== -1) {
             pairs.push(pair);
             b = b.slice(0, index) + b.slice(index + 2);
         }
     }
-    score = 2 * pairs.length / (a.length + b.length);
+    
+    if (type === "artist") {
+        score = 2 * pairs.length / (a.length + b.length);
+    } else {
+        score = pairs.length / maxLength;
+    }
+
     return score;
 }
 
@@ -22,67 +31,61 @@ export async function GET({ params, request }: { params: any; request: any }) {
     const urlObject = new URL(url);
     const title = urlObject.searchParams.get("title");
 
-    // Si la cadena de búsqueda tiene solo un carácter, buscar la primera coincidencia que contenga ese carácter
-    if (title.length === 1) {
-        // Buscar en la lista de álbumes
-        const albumMatch = allPlaylists.find((album) => album.title.toLowerCase().includes(title.toLowerCase()));
-        if (albumMatch) {
-            return new Response(JSON.stringify(albumMatch), {
-                headers: { "content-type": "application/json" },
-            });
-        }
+    // Consultar artistas, álbumes y canciones que coincidan con el título proporcionado
+    const artists = await db.select().from(Artists).where(like(Artists.name, `%${title}%`)).limit(1);
+    const albums = await db.select().from(Albumns).where(like(Albumns.title, `%${title}%`)).limit(1);
+    const songs = await db.select().from(Songs).where(like(Songs.title, `%${title}%`)).limit(1);
 
-        // Buscar en la lista de canciones
-        const songMatch = songs.find((song) => song.title.toLowerCase().includes(title.toLowerCase()));
-        if (songMatch) {
-            return new Response(JSON.stringify(songMatch), {
-                headers: { "content-type": "application/json" },
-            });
-        }
-    }
-
-    // Buscar la coincidencia exacta en la lista de álbumes
-    let exactAlbumMatch = allPlaylists.find((album) => album.title.toLowerCase() === title.toLowerCase());
-    if (exactAlbumMatch) {
-        return new Response(JSON.stringify(exactAlbumMatch), {
+    // Devolver resultados
+    if (artists.length > 0) {
+        return new Response(JSON.stringify(artists), {
             headers: { "content-type": "application/json" },
         });
-    }
-
-    // Buscar la coincidencia exacta en la lista de canciones
-    let exactSongMatch = songs.find((song) => song.title.toLowerCase() === title.toLowerCase());
-    if (exactSongMatch) {
-        return new Response(JSON.stringify(exactSongMatch), {
+    } else if (albums.length > 0) {
+        return new Response(JSON.stringify(albums), {
             headers: { "content-type": "application/json" },
         });
-    }
+    } else if (songs.length > 0) {
+        return new Response(JSON.stringify(songs), {
+            headers: { "content-type": "application/json" },
+        });
+    } else {
+        // Si no se encuentran coincidencias exactas o parciales, buscar la más similar
+        let mostSimilarItem: any = null;
+        let maxSimilarity = 0;
 
-    // Buscar el álbum o canción que mejor coincide con el título proporcionado
-    let mostSimilarItem: Playlist | Song | null = null;
-    let maxSimilarity = 0;
-
-    // Buscar en la lista de álbumes
-    allPlaylists.forEach((album) => {
-        const sim = substringSimilarity(title.toLowerCase(), album.title.toLowerCase());
-        if (sim > maxSimilarity) {
-            maxSimilarity = sim;
-            mostSimilarItem = album;
-        }
-    });
-
-    // Buscar en la lista de canciones solo si no se encontró un álbum
-    if (!mostSimilarItem) {
-        songs.forEach((song) => {
-            const sim = substringSimilarity(title.toLowerCase(), song.title.toLowerCase());
+        // Buscar la similitud en los artistas
+        artists.forEach((artist: any) => {
+            const sim = substringSimilarity(title.toLowerCase(), artist.name.toLowerCase(), "artist");
             if (sim > maxSimilarity) {
                 maxSimilarity = sim;
-                mostSimilarItem = song;
+                mostSimilarItem = artist;
             }
         });
-    }
 
-    // Devolver el álbum o canción encontrado
-    return new Response(JSON.stringify(mostSimilarItem), {
-        headers: { "content-type": "application/json" },
-    });
+        // Buscar la similitud en los álbumes
+        albums.forEach((album: any) => {
+            const sim = substringSimilarity(title.toLowerCase(), album.title.toLowerCase(), "album");
+            if (sim > maxSimilarity) {
+                maxSimilarity = sim;
+                mostSimilarItem = album;
+            }
+        });
+
+        // Buscar la similitud en las canciones solo si no se encontró un álbum o artista
+        if (!mostSimilarItem) {
+            songs.forEach((song: any) => {
+                const sim = substringSimilarity(title.toLowerCase(), song.title.toLowerCase(), "song");
+                if (sim > maxSimilarity) {
+                    maxSimilarity = sim;
+                    mostSimilarItem = song;
+                }
+            });
+        }
+
+        // Devolver el álbum, canción o artista encontrado más similar
+        return new Response(JSON.stringify(mostSimilarItem), {
+            headers: { "content-type": "application/json" },
+        });
+    }
 }

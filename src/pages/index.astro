@@ -1,13 +1,11 @@
 ---
 import Layout from "../layouts/Layout.astro"
 import PlayListItemCard from "@/components/PlayListItemCard.astro"
-import { playlists } from "@/lib/data"
-
 import Greeting from "@/components/Greeting.svelte"
 import {db, Albumns} from 'astro:db';
 
 const Albumn = await db.select().from(Albumns);
-console.log(Albumn)
+
 /*
 Albumn.map(album => {console.log(album)})
 */

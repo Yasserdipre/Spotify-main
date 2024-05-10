@@ -1,10 +1,8 @@
 ---
-import MusicsTable from "@/components/MusicsTable.astro"
+
 import TableComponent from "@/components/SongTable"
 import Layout from "../../layouts/Layout.astro"
 import { CardPlayButton } from "@/components/CardPlayButton"
-import { allPlaylists, songs } from "@/lib/data"
-
 const { id } = Astro.params
 import {db, Albumns, Songs} from 'astro:db';
 import { like } from "astro:db"

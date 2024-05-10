@@ -4,6 +4,8 @@ import HomeIcon from "@/icons/Home.astro"
 import SearchIcon from "@/icons/Search.astro"
 import SideMenuItem from "./SideMenuItem.astro"
 import SideMenuCard from "./SideMenuCard.astro"
+import {db, Albumns} from 'astro:db';
+const Albumn = await db.select().from(Albumns);
 
 import { playlists } from "@/lib/data"
 ---
@@ -29,8 +31,7 @@ import { playlists } from "@/lib/data"
         <LibraryIcon />
          Tu biblioteca
       </SideMenuItem>
-
-      {playlists.map((playlist) => <SideMenuCard playlist={playlist} />)}
+      {Albumn.map((Album) => <SideMenuCard AlbumData={Album} />)}
     </ul>
   </div>
 </nav>

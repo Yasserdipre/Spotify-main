@@ -1,5 +1,15 @@
 import { defineDb, column, defineTable } from 'astro:db';
 
+const Artists = defineTable ({
+  columns: {
+      id: column.text({primaryKey: true}),
+      name: column.text(),
+      image: column.text(),
+      listeners: column.number({optional:true}),
+      genre: column.json({optional:true}),
+      tipo: column.text()
+  }
+})
 
 const Albumns = defineTable ({
     columns: {
@@ -8,7 +18,7 @@ const Albumns = defineTable ({
         color: column.json(),
         cover: column.text(),
         artists: column.json(),
-        artistId: column.text(),
+        artistId: column.text({references: () => Artists.columns.id}),
         tipo: column.text()
     }
 })
@@ -16,7 +26,7 @@ const Albumns = defineTable ({
 const Songs = defineTable ({
   columns: {
       id: column.text({primaryKey: true}),
-      albumId: column.text({references: () => Albumns.columns.id}),
+      albumId: column.text({references: () => Albumns.columns.id, optional:true}),
       title: column.text(),
       image: column.text(),
       artists: column.json(),
@@ -27,7 +37,8 @@ const Songs = defineTable ({
   }
 })
 
+
 export default defineDb({
-  tables: {Songs, Albumns},
+  tables: {Songs, Albumns, Artists},
 })
 

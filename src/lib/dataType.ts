@@ -1,9 +1,10 @@
-
-
-export type Data = Album | Song;
+export type Artist = Artists
+export type Data = Album | Song | Artists;
 export type Albumn = Album;
 export type SongProps = Song
- export type SQL =  SQLiteTable[] | { [key: string]: any };
+export type SQL =  SQLiteTable[] | { [key: string]: any };
+
+
 
 interface Album {
     id: string;
@@ -23,6 +24,15 @@ interface Album {
     artists: {[key: string]: string};
     album: string;
     duration: string;
+    tipo: string;
+  }
+  
+  interface Artists {
+    id: string;
+    name: string; 
+    image: string;
+    listeners: number;
+    genre: string;
     tipo: string;
   }
   

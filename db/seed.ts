@@ -1,48 +1,66 @@
-import { Albumns, Songs } from "astro:db";
+import { Albumns, Songs, Artists, db } from "astro:db";
 import { randomUUID } from "node:crypto";
-import { AlbumnData, SongsData } from "../src/lib/songsData";
-import { insertDB, getAlbumnId } from "./querys";
+import { AlbumnData, SongsData, ArtistsData } from "../src/lib/songsData";
+import { insertDB, getAlbumnId, getArtistsId } from "./querys";
+
 
 export default async function seed() {
-  
-  const albumsWithIds = AlbumnData.map((album) => ({
-    ...album,
+  const artitsWithIds = ArtistsData.map((artists) => ({
+    ...artists,
     id: randomUUID(),
   }));
-  let errorResult: boolean | null = null;
+  let errorResultFirst: boolean | null = null;
   try {
-    insertDB(albumsWithIds, Albumns)
-    console.log("Albums inserted successfully");
-    errorResult = false;
+    insertDB(artitsWithIds, Artists)
+    console.log("Artists inserted successfully");
+    errorResultFirst = false;
   } catch (error) {
     console.error("Error inserting albums: ", error);
-    errorResult = true;
-    return; 
+    errorResultFirst = true;
+    return;
   }
 
-  if(errorResult == false) {
+ 
+  if (errorResultFirst == false) {
+
+    const promises = AlbumnData.map(async (album) => ({
+      ...album,
+      id: randomUUID(),
+      artistId: await getArtistsId(album.artists),
+    }));
+    
+    let errorResult: boolean | null = null;
+    const albumnsWithIds= await Promise.all(promises);
     try {
-      const promises = SongsData.map(async (song) => ({
-        ...song,
-        id: randomUUID(),
-        albumId: await getAlbumnId(song.album, song.artists)
-      }));
-  
-      const songsWithIdsAndAlbumnId = await Promise.all(promises);
-      console.log(songsWithIdsAndAlbumnId)
-      try {
-        let insert = await insertDB(songsWithIdsAndAlbumnId, Songs)
-      } catch (error) {
-        console.error("Error inserting Songs: ", error);
-        return; 
-      }
-      
-      
+      insertDB(albumnsWithIds, Albumns);
+      console.log("Albums inserted successfully");
+      errorResult = false;
     } catch (error) {
-      console.error("Error inserting songs: ", error);
+      console.error("Error inserting albums: ", error);
+      errorResult = true;
+      return;
+    }
+     
+    if (errorResult == false) {
+      try {
+        const promises = SongsData.map(async (song) => ({
+          ...song,
+          id: randomUUID(),
+          albumId: await getAlbumnId(song.album, song.artists),
+          artistId: await getArtistsId(song.artists)
+        }));
+
+        const songsWithIdsAndAlbumnId = await Promise.all(promises);
+        console.log(songsWithIdsAndAlbumnId)
+        try {
+          let insert = await insertDB(songsWithIdsAndAlbumnId, Songs);
+        } catch (error) {
+          console.error("Error inserting Songs: ", error);
+          return;
+        }
+      } catch (error) {
+        console.error("Error inserting songs: ", error);
+      }
     }
   }
-  }
-
-
-
+}
