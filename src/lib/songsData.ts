@@ -105,75 +105,80 @@ export const ArtistsData : Artist[] = [
 ]
 
 export const AlbumnData: Albumn[] = [
-    {
-      id: "",
-      title: "Hybrid Theory",
-      color: colors.yellow,
-      cover:ImgURL.LinkinPark.HybridTheory.image
-        ,
-      artists: {
-        principal: "Linkin Park"
+  {
+    id: "",
+    title: "Hybrid Theory",
+    color: colors.yellow,
+    cover: ImgURL.LinkinPark.HybridTheory.image,
+    artists: {
+      principal: "Linkin Park"
     },
-      artistId: "",
-      tipo: "Album",
+    artistId: "",
+    tipo: "Album",
+    genre: "Nu Metal"
+  },
+  {
+    id: "",
+    title: "Midnight Tales",
+    color: colors.green,
+    cover: ImgURL.UrbanNocturne.MidnightTales.image,
+    artists: {
+      principal: "Urban Nocturne"
     },
-    {
-      id: "",
-      title: "Midnight Tales",
-      color: colors.green,
-      cover: ImgURL.UrbanNocturne.MidnightTales.image,
-      artists: {
-        principal: "Urban Nocturne"
+    artistId: "",
+    tipo: "Album",
+    genre: "Jazz"
+  },
+  {
+    id: "",
+    title: "Study Session",
+    color: colors.rose,
+    cover: ImgURL.Tenno.StudySession.image,
+    artists: {
+      principal: "Tenno"
     },
-      artistId: "",
-      tipo: "Album",
+    artistId: "",
+    tipo: "Album",
+    genre: "Lo-Fi"
+  },
+  {
+    id: "",
+    title: "Blue Note Study Time",
+    color: colors.blue,
+    cover: ImgURL.Raimu.BlueNoteStudyTime.image,
+    artists: {
+      principal: "Raimu"
     },
-    {
-      id: "",
-      title: "Study Session",
-      color: colors.rose,
-      cover: ImgURL.Tenno.StudySession.image,
-      artists: {
-        principal: "Tenno"
+    artistId: "",
+    tipo: "Album",
+    genre: "Jazz"
+  },
+  {
+    id: "",
+    title: "Chill Lo-Fi Music",
+    color: colors.purple,
+    cover: ImgURL.LoFiDreamer.ChillLoFiMusic.image,
+    artists: {
+      principal: "LoFi Dreamer"
     },
-      artistId: "",
-      tipo: "Album",
+    artistId: "",
+    tipo: "Album",
+    genre: "Lo-Fi"
+  },
+  {
+    id: "",
+    title: "Formula, Vol. 1",
+    color: colors.yellow,
+    cover: ImgURL.RomeoSantos.FormulaVol1.image,
+    artists: {
+      principal: "Romeo Santos"
     },
-    {
-      id: "",
-      title: "Blue Note Study Time",
-      color: colors.blue,
-      cover: ImgURL.Raimu.BlueNoteStudyTime.image,
-      artists: {
-        principal: "Raimu"
-    },
-      artistId: "",
-      tipo: "Album",
-    },
-    {
-      id: "",
-      title: "Chill Lo-Fi Music",
-      color: colors.purple,
-      cover: ImgURL.LoFiDreamer.ChillLoFiMusic.image,
-      artists: {
-        principal: "LoFi Dreamer"
-    },
-      artistId: "",
-      tipo: "Album",
-    },
-    {
-      id: "",
-      title: "Formula, Vol. 1",
-      color: colors.yellow,
-      cover: ImgURL.RomeoSantos.FormulaVol1.image,
-      artists: {
-        principal: "Romeo Santos"
-      },
-      artistId: "",
-      tipo: "Album"
-    }
-    
-  ];
+    artistId: "",
+    tipo: "Album",
+    genre: "Bachata"
+  }
+];
+
   
 
   export interface Song {

@@ -3,7 +3,7 @@ import Layout from "../layouts/Layout.astro"
 import PlayListItemCard from "@/components/PlayListItemCard.astro"
 import Greeting from "@/components/Greeting.svelte"
 import {db, Albumns} from 'astro:db';
-
+import User from "@/components/User.astro";
 const Albumn = await db.select().from(Albumns);
 
 /*
@@ -21,7 +21,15 @@ Albumn.map(album => {console.log(album)})
     <!-- <PageHeader /> -->
 
     <div class="relative z-10 px-6 pt-10">
-      <Greeting />
+
+      <div class="flex justify-between items-start">
+        <Greeting />
+        <User />
+      </div>
+      <div class="flex flex-wrap mt-6 gap-4">
+        {Albumn.map((Album) => <PlayListItemCard AlbumData={Album} />)}
+      </div>
+
       <div class="flex flex-wrap mt-6 gap-4">
         {Albumn.map((Album) => <PlayListItemCard AlbumData={Album} />)}
       </div>
@@ -35,3 +43,5 @@ Albumn.map(album => {console.log(album)})
     <style></style>
   </div>
 </Layout>
+
+

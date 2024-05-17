@@ -1,13 +1,18 @@
 ---
-import { Player } from "@/components/Player"
-import AsideMenu from "../components/AsideMenu.astro"
-import { ViewTransitions } from "astro:transitions"
+import { Player } from "@/components/Player";
+import AsideMenu from "../components/AsideMenu.astro";
+import { ViewTransitions } from "astro:transitions";
+import { getSession } from "auth-astro/server";
+const session = await getSession(Astro.request);
+import Twitch from "@/icons/Twitch.astro";
+import Google from "@/icons/Google.astro";
+import Github from "@/icons/Github.astro";
 
 interface Props {
-  title: string
+  title: string;
 }
 
-const { title } = Astro.props
+const { title } = Astro.props;
 ---
 
 <!doctype html>
@@ -22,21 +27,80 @@ const { title } = Astro.props
     <ViewTransitions fallback="none" />
   </head>
   <body>
-    <div id="app" class="relative h-screen p-2 gap-2">
-      <aside class="[grid-area:aside] flex-col flex overflow-y-auto">
-        <AsideMenu />
-      </aside>
+    <div></div>
+    {
+      session ? (
+        <div id="app" class="relative h-screen p-2 gap-2">
+          <aside class="[grid-area:aside] flex-col flex overflow-y-auto">
+            <AsideMenu />
+          </aside>
 
-      <main
-        class="[grid-area:main] rounded-lg bg-zinc-900 overflow-y-auto w-full"
-      >
-        <slot />
-      </main>
+          <main class="[grid-area:main] rounded-lg bg-zinc-900 overflow-y-auto w-full">
+            <slot />
+          </main>
 
-      <footer class="[grid-area:player] h-[80px]">
-        <Player client:load transition:name="media-player" transition:persist />
-      </footer>
-    </div>
+          <footer class="[grid-area:player] h-[80px]">
+            <Player
+              client:load
+              transition:name="media-player"
+              transition:persist
+            />
+          </footer>
+        </div>
+      ) : (
+        <div class="flex justify-center items-center h-screen">
+          <div class="border border-white p-36 rounded-lg">
+            <div class="w-full text-center text-white text-6xl">
+              Iniciar Sesión
+            </div>
+
+            <div class="flex w-full  text-white">
+              <div class="mx-auto flex">
+                <h4>¿No tienes una cuenta?</h4>
+                <span class="ml-3">
+                  <a href="http://">Registrate</a>
+                </span>
+              </div>
+            </div>
+
+            <div class="flex mt-2">
+              <div class="border border-purple-600 p-3">
+                <Twitch />
+              </div>
+              <button
+                class="bg-purple-600 px-2 w-full"
+                id="loginTwitch"
+                type="button"
+              >
+                Iniciar Sesión con Twitch
+              </button>
+            </div>
+
+            <div class="flex mt-2">
+              <div class="border border-cyan-500 p-3">
+                <Google />
+              </div>
+              <button
+                class="bg-cyan-500 px-2 w-full"
+                id="loginGoogle"
+                type="button"
+              >
+                Iniciar Sesión con Google
+              </button>
+            </div>
+
+            <div class="flex mt-2">
+              <div class="border border-gray-400 p-3">
+                <Github />
+              </div>
+              <button class="bg-gray-400 px-2 w-full" id="loginGithub" type="button">
+                Iniciar Sesión con Github
+              </button>
+            </div>
+          </div>
+        </div>
+      )
+    }
     <style>
       #app {
         display: grid;
@@ -95,5 +159,29 @@ const { title } = Astro.props
         font-display: swap;
       }
     </style>
+
+    <script>
+      import { $ } from "@/lib/dom-selector";
+
+      const { signIn, signOut } = await import("auth-astro/client");
+      const $loginTwitch = $("#loginTwitch");
+      const $loginGoogle = $("#loginGoogle");
+      const $loginGithub = $("#loginGithub");
+      if ($loginTwitch) {
+        $loginTwitch.onclick = () => {
+          signIn("twitch");
+        };
+      }
+      if ($loginGoogle) {
+        $loginGoogle.onclick = () => {
+          signIn("google")
+        };
+      }
+      if ($loginGithub) {
+        $loginGithub.onclick = () => {
+          signIn("github")
+        };
+      }
+    </script>
   </body>
 </html>

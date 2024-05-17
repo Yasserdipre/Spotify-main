@@ -9,7 +9,7 @@ interface Props {
 
 
 const TableComponent: React.FC<Props> = ({ songs }) => {
-
+  
   const { setCurrentMusic, setIsPlaying, currentMusic } = usePlayerStore(state => state);
   const [hoveredSong, setHoveredSong] = useState<SongProps | null>(null);
 
@@ -22,9 +22,9 @@ const TableComponent: React.FC<Props> = ({ songs }) => {
       .then(data => {
         const { songs, playlist } = data;
         const selectedSong : SongProps[] = songs.find((s: { id: string; }) => s.id === song.id);
-      
         if (selectedSong) {
           setIsPlaying(true);
+          
           setCurrentMusic({ songs, playlist, song: selectedSong });
         } else {
           console.error(`No se encontró ninguna canción con el ID ${song.id}`);

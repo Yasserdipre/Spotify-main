@@ -2,7 +2,7 @@
 
 import TableComponent from "@/components/SongTable"
 import Layout from "../../layouts/Layout.astro"
-import { CardPlayButton } from "@/components/CardPlayButton"
+import { CardPlayButton } from "@/components/CardPlayButton";
 const { id } = Astro.params
 import {db, Albumns, Songs, Artists} from 'astro:db';
 import { like } from "astro:db"
@@ -10,8 +10,6 @@ import { like } from "astro:db"
 const artists = await db.select().from(Artists).where(like(Artists.id, id))
 const albums = await db.select().from(Albumns).where(like(Albumns.artistId, id))
 const songs = await db.select().from(Songs).where(like(Songs.albumId, albums[0].id));
-
-
 ---
 
 <Layout title="Spotify Clone">
@@ -26,7 +24,7 @@ const songs = await db.select().from(Songs).where(like(Songs.albumId, albums[0].
       <picture class=`aspect-square w-full h-80 flex-none bg-no-repeat` transition:name=`playlist ${albums[0]?.id} image` style=`background-image: url('${artists[0]?.image}'); background-size: 100%; background-position: center;"`>
         <div class="flex flex-col justify-between mt-40 ml-8">
             <div>
-              <h1 class="text-5xl font-bold block text-white">
+              <h1 class="font-bold text-8xl block text-white">
                 {artists[0]?.name}
                 <span transition:name=`playlist ${albums[0]?.id} title`></span>
               </h1>
@@ -35,6 +33,7 @@ const songs = await db.select().from(Songs).where(like(Songs.albumId, albums[0].
             <div class="flex-1 flex items-end">
               <div class="text-sm text-gray-300 font-normal">
                 <div transition:name=`playlist ${albums[0]?.id} artists`>
+                  <span>{artists[0]?.listeners} oyentes mensuales</span>
                 </div>
               </div>
             </div>
@@ -45,7 +44,7 @@ const songs = await db.select().from(Songs).where(like(Songs.albumId, albums[0].
     </header>
 
     <div class="pl-6 pt-6">
-      <CardPlayButton client:load id={id} size="large" />
+      <CardPlayButton client:load id={id} size="large" followButt="seguir"/>
     </div>
 
     <div class="relative z-10 px-6 pt-10"></div>
@@ -56,7 +55,7 @@ const songs = await db.select().from(Songs).where(like(Songs.albumId, albums[0].
     </div>
 
     <section class="p-6">
-      <TableComponent client:load songs={songs} />
+      <TableComponent client:load songs={songs}/>
     </section>
   </div>
 </Layout>

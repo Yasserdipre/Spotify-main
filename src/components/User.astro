@@ -1,0 +1,22 @@
+---
+import { getSession } from "auth-astro/server";
+const session = await getSession(Astro.request);
+let letter = session?.user?.name?.charAt(0);
+if (letter && isNaN(parseInt(letter))) {
+  letter = letter.toUpperCase();
+}
+import SignOutButton from "./AuthButtton";
+
+---
+
+
+
+
+      <SignOutButton session={session} client:load/>
+
+  
+
+  
+  
+  
+  

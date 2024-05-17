@@ -10,7 +10,6 @@ const SongSearch = ({ searchResults, setCurrentMusic, setIsPlaying, currentMusic
             .then(res => res.json())
             .then(data => {
                 const { songs, playlist } = data;
-                console.log(playlist);
                 setIsPlaying(true);
                 setCurrentMusic({ songs: searchResults, playlist: playlist, song: song });
             });

@@ -1,6 +1,7 @@
 import { usePlayerStore } from "@/store/playerStore"
 import { useEffect, useRef, useState } from "react"
 import { Slider } from "./Slider"
+import axios from "node_modules/axios"
 
 export const Pause = ({ className }) => (
   <svg className={className} role="img" height="16" width="16" aria-hidden="true" viewBox="0 0 16 16"><path d="M2.7 1a.7.7 0 0 0-.7.7v12.6a.7.7 0 0 0 .7.7h2.6a.7.7 0 0 0 .7-.7V1.7a.7.7 0 0 0-.7-.7H2.7zm8 0a.7.7 0 0 0-.7.7v12.6a.7.7 0 0 0 .7.7h2.6a.7.7 0 0 0 .7-.7V1.7a.7.7 0 0 0-.7-.7h-2.6z"></path></svg>
@@ -167,8 +168,29 @@ export function Player() {
       audioRef.current.src = src;
       audioRef.current.volume = volume;
       audioRef.current.play();
+     
     }
   }, [currentMusic]);
+
+  useEffect(() =>{
+
+    const { song } = currentMusic;
+    if(song) {
+      const sendPostRequest = async () => {
+        try {
+          // Realizar la solicitud POST con song.artistId como parámetro
+          await axios.post('/api/post-artists-cant', { artistId: song.artistId });
+        } catch (error) {
+          console.error('Error al enviar la solicitud POST:', error);
+        }
+      };
+      sendPostRequest();
+    }
+    
+
+    // Llamar a la función para realizar la solicitud POST
+    
+  }, [currentMusic.song])
 
   useEffect(() => {
     const handleEnded = () => {
@@ -187,7 +209,6 @@ export function Player() {
       setIsPlaying(!isPlaying);
       setCanHandleClick(true);
     }
-    console.log(isPlaying);
   };
   const handleClickNext = () => {
     const { songs } = currentMusic;

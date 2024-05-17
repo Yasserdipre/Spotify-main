@@ -5,12 +5,14 @@ export async function GET({ params, request }) {
   const { url } = request
   const urlObject = new URL(url)
   const id = urlObject.searchParams.get('id')
-  const Song = await db.select().from(Songs).where(like(Songs.albumId, id));
-  const Album = await db.select().from(Albumns).where(like(Albumns.id, id))
-
+  let Song = await db.select().from(Songs).where(like(Songs.albumId, id));
+  let Album = await db.select().from(Albumns).where(like(Albumns.id, id))
+  if (Song.length === 0) {
+    Song = await db.select().from(Songs).where(like(Songs.artistId, id));
+    Album = await db.select().from(Albumns).where(like(Albumns.artistId, id))
+  }
   const playlist = Album
   const songs = Song
-  
   return new Response(JSON.stringify({ playlist, songs }), {
     headers: { "content-type": "application/json" },
   })

@@ -8,7 +8,8 @@ import {db, Albumns, Songs} from 'astro:db';
 import { like } from "astro:db"
 const albums = await db.select().from(Albumns).where(like(Albumns.id, id))
 const songs = await db.select().from(Songs).where(like(Songs.albumId, id))
-
+import duration from '@/components/TimeDuration'
+const time = duration(songs)
 
 ---
 
@@ -42,11 +43,11 @@ const songs = await db.select().from(Songs).where(like(Songs.albumId, id))
         <div class="flex-1 flex items-end">
           <div class="text-sm text-gray-300 font-normal">
             <div transition:name=`playlist ${albums[0]?.id} artists`>
-              <span>{albums[0]?.artists.principal}</span>
+              <span><a href=`/artists/${albums[0].artistId}`>{albums[0]?.artists.principal}</a></span>
             </div>
             <p class="mt-1">
               <span class="text-white">{songs.length} canciones</span>,
-              3 h aproximadamente
+              {time} aproximadamente
             </p>
           </div>
         </div>

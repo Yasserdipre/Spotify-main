@@ -5,16 +5,14 @@ const AlbumSearch = ({ searchQuery, setCurrentMusic, setIsPlaying }) => {
     const [albumResults, setAlbumResults] = useState([]);
 
     const handleButtonClick = (album, index) => {
-        console.log("Album: ", album)
+
         fetch(`/api/get-info-playlist.json?id=${album.id}`)
             .then(res => res.json())
             .then(data => {
                 const { songs, playlist } = data;
-                console.log(playlist);
                 setIsPlaying(true);
                 setCurrentMusic({ songs: songs, playlist: playlist, song: songs[0] });
             });
-            console.log(album.albumId)
     };
 
     useEffect(() => {

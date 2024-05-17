@@ -11,9 +11,6 @@ const PrincipalResult = ({ searchQuery }) => {
             .then(res => res.json())
             .then(data => {
                 const { songs, playlist } = data;
-                console.log(songs)
-                console.log(playlist)
-                console.log(results)
                 setIsPlaying(true);
                 setCurrentMusic({ songs: songs, playlist: playlist, song: results });
             });
@@ -24,8 +21,6 @@ const PrincipalResult = ({ searchQuery }) => {
             .then(res => res.json())
             .then(data => {
                 const { songs, playlist } = data;
-                console.log("Song: ",songs)
-                console.log("playlist: ", playlist)
                 setIsPlaying(true);
                 setCurrentMusic({ songs: songs, playlist: playlist, song: songs[0] });
             });
@@ -57,7 +52,6 @@ const PrincipalResult = ({ searchQuery }) => {
   
               if (data) {
                   setResults(data);
-                  console.log(data)
               } else {
                   setResults([]);
               }
@@ -125,8 +119,8 @@ const PrincipalResult = ({ searchQuery }) => {
                   results !== undefined && results.tipo === 'Artista' ? (
                     <article className="group relative hover:bg-zinc-800 shadow-lg hover:shadow-xl bg-zinc-500/30 rounded-md ransi transition-all duration-300 w-auto">
                       <a href={`/artists/${results.id}`} className="playlist-item transition-all duration-300 flex relative p-2 overflow-hidden gap-2 pb-6 rounded-md w-auto flex-col">
-                        <picture className="aspect-square w-36 h-auto flex-none">
-                          <img src={results.image} alt={`Cover of ${results.name}`} className="object-cover w-28 h-28 rounded-md" />
+                        <picture className="aspect-square w-36 h-auto flex-none mt-2">
+                          <img src={results.image} alt={`Cover of ${results.name}`} className="object-cover w-28 h-28 rounded-full" />
                         </picture>
                         <div className="flex flex-auto flex-col px-2 w-96">
                           <h4 className="text-white text-4xl">{results.name}</h4>

@@ -14,6 +14,7 @@ interface Album {
     artists: {[key: string]: string};
     artistId: string;
     tipo: string;
+    genre: string;
   }
   
   interface Song {

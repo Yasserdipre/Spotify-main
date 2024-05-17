@@ -53,7 +53,7 @@ const ArtistsSearch = ({ searchQuery, setCurrentMusic, setIsPlaying }) => {
         {artistResult.map((artist, index) => (
     <div key={index} className="text-white text-lg mx-3 relative">
         <article className="group relative hover:bg-zinc-800 hover:shadow-xl hover:rounded-md ransi transition-all duration-300">
-            <a href={`/playlist/${artist.id}`} className="playlist-item transition-all duration-300 flex relative p-2 overflow-hidden gap-2 pb-6 rounded-md w-44 flex-col">
+            <a href={`/artists/${artist.id}`} className="playlist-item transition-all duration-300 flex relative p-2 overflow-hidden gap-2 pb-6 rounded-md w-44 flex-col">
                 <picture className="aspect-square w-full h-auto flex-none">
                     <img src={artist.image} alt={`Cover of ${artist.name}`} className="object-cover w-full h-full rounded-full" />
                 </picture>

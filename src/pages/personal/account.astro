@@ -1,0 +1,26 @@
+---
+import { getSession } from "auth-astro/server";
+const session = await getSession(Astro.request);
+import Layout from "@/layouts/Layout.astro";
+---
+
+<Layout title="Spotify Clone">
+    <div>
+        <div class="flex justify-center">
+            <div class="mt-12">
+                <picture>
+                    <img src={session?.user?.image} alt="perfilImage.jpg" class="rounded-full w-[250px]" srcset="">
+                </picture>
+                <h3 class="text-center mt-3">{session?.user?.name}</h3>
+            </div>
+        </div>
+    </div>
+</Layout>
+
+
+
+
+
+
+
+
