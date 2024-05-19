@@ -1,4 +1,4 @@
-import { Albumns, Songs, Artists, db } from "astro:db";
+import { Albumns, Songs, Artists } from "astro:db";
 import { randomUUID } from "node:crypto";
 import { AlbumnData, SongsData, ArtistsData } from "../src/lib/songsData";
 import { insertDB, getAlbumnId, getArtistsId } from "./querys";

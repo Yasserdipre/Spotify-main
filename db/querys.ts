@@ -1,5 +1,5 @@
 import type { Data, SQL } from "@/lib/dataType";
-import { db, Albumns, Artists, like, and, eq } from "astro:db";
+import { db, Songs, Albumns, Artists, like, and, eq } from "astro:db";
 
 
 export const insertDB = async (Values : Data[], data : any ) => {
@@ -44,6 +44,22 @@ export const insertDB = async (Values : Data[], data : any ) => {
       return artistData[0].id;
     } catch (error) {
       console.error("Error getting artist ID: ", error);
+      return null;
+    }
+  };
+
+  export const getSongId = async (name: string, artistsID: string) => {
+    try {
+      const song = await db.select({ id: Songs.id }).from(Songs).where(and(eq(Songs.title, name), eq(Songs.artistId, artistsID)));
+      
+      if (song.length === 0) {
+        console.error(`No album found with name: ${name}`);
+        return null;
+      }
+  
+      return song[0].id;
+    } catch (error) {
+      console.error("Error getting song ID: ", error);
       return null;
     }
   };

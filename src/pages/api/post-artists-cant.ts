@@ -1,6 +1,6 @@
 import { db, Songs, Albumns, like, Artists, eq } from "astro:db";
 
-export async function POST({ request }) {
+export async function POST({ request } : {request : any}) {
   try {
     // Obtener los datos del cuerpo de la solicitud POST
     const body = await request.json();

@@ -1,0 +1,25 @@
+---
+import Layout from "@/layouts/Layout.astro"
+import UploadMusicForm from "@/components/NewMusic"
+import { db, Users, like } from "astro:db";
+import { getSession } from "auth-astro/server";
+const session = await getSession(Astro.request);
+const rol = await db.select({rol: Users.rol}).from(Users).where(like(Users.name, session?.user?.name))
+console.log(rol)
+let rolData;
+if(rol.length > 0) {
+  rolData = rol[0].rol
+}
+else{
+  return Astro.redirect("/404")
+} 
+
+
+---
+
+
+
+
+<Layout title="Spotify Clone">
+  <UploadMusicForm client:load/>
+</Layout>

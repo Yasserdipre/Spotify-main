@@ -1,7 +1,7 @@
 import { signOut } from "auth-astro/client";
 import { useState } from "react";
 
-function SignOutButton({ session }) {
+function SignOutButton({ session, rol }) {
     let letter = session?.user?.name?.charAt(0);
     if (letter && isNaN(parseInt(letter))) {
       letter = letter.toUpperCase();
@@ -34,6 +34,14 @@ function SignOutButton({ session }) {
             <a href="/personal/perfil" className="w-full h-full">
             <button className="hover:bg-zinc-800 w-full rounded-md py-2">Perfil</button>
             </a>
+
+            {rol === "admin" && (
+              <a href="/upload" className="w-full h-full">
+              <button className="hover:bg-zinc-800 w-full rounded-md py-2">Subir Música</button>
+              </a>
+            )}
+
+            
             
             <button onClick={handleSignOut} className="hover:bg-zinc-800 w-full rounded-md py-2">Cerrar Sesión</button>
           </div>

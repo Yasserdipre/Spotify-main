@@ -44,6 +44,7 @@ const Users = defineTable ({
     name: column.text(),
     email: column.text(),
     image: column.text(),
+    rol: column.text({optional: true})
   }
 })
 
