@@ -23,17 +23,18 @@ export default defineConfig({
             clientSecret: import.meta.env.GITHUB_CLIENT_SECRET
         }),
         CredentialsProvider({
-            name: 'Credentials',
+            name: 'credentials',
             credentials: {
                 email: { label: "Email", type: "text" },
                 password: { label: "Password", type: "password" }
             },
             authorize: async (credentials) => {
                 const user = await db.select().from(Users).where(eq(Users.email, credentials.email));
+                console.log("credenciales", credentials)
                 if (user.length > 0 && bcrypt.compareSync(credentials.password, user[0].password)) {
                     return { id: user[0].id, name: user[0].name, email: user[0].email };
                 }
-                return null;
+                return console.log("ok");
             }
         })
     ],
