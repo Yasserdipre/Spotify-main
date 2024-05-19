@@ -7,6 +7,8 @@ const session = await getSession(Astro.request);
 import Twitch from "@/icons/Twitch.astro";
 import Google from "@/icons/Google.astro";
 import Github from "@/icons/Github.astro";
+import LoginForm from "@/components/LoginForm"
+
 
 interface Props {
   title: string;
@@ -54,49 +56,36 @@ const { title } = Astro.props;
               Iniciar Sesión
             </div>
 
-            <div class="flex w-full  text-white">
-              <div class="mx-auto flex">
-                <h4>¿No tienes una cuenta?</h4>
-                <span class="ml-3">
-                  <a href="http://">Registrate</a>
-                </span>
-              </div>
-            </div>
 
-            <div class="flex mt-2">
-              <div class="border border-purple-600 p-3">
-                <Twitch />
-              </div>
+            <div class="flex gap-4 justify-center my-3">
+              <div class="flex mt-2">
               <button
-                class="bg-purple-600 px-2 w-full"
+                class="border border-purple-600 p-3  hover:bg-purple-600"
                 id="loginTwitch"
                 type="button"
               >
-                Iniciar Sesión con Twitch
+                <Twitch />
               </button>
             </div>
 
             <div class="flex mt-2">
-              <div class="border border-cyan-500 p-3">
-                <Google />
-              </div>
               <button
-                class="bg-cyan-500 px-2 w-full"
+                class="border border-cyan-500 p-3 hover:bg-cyan-500"
                 id="loginGoogle"
                 type="button"
               >
-                Iniciar Sesión con Google
+                <Google />
               </button>
             </div>
 
             <div class="flex mt-2">
-              <div class="border border-gray-400 p-3">
+              <button class="border border-gray-400 p-3 hover:bg-gray-400" id="loginGithub" type="button">
                 <Github />
-              </div>
-              <button class="bg-gray-400 px-2 w-full" id="loginGithub" type="button">
-                Iniciar Sesión con Github
               </button>
             </div>
+            </div>
+
+            <LoginForm client:load/>
           </div>
         </div>
       )

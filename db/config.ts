@@ -41,9 +41,10 @@ const Songs = defineTable ({
 const Users = defineTable ({
   columns: {
     id: column.text({primaryKey: true}),
+    password: column.text({optional:true}),
     name: column.text(),
     email: column.text(),
-    image: column.text(),
+    image: column.text({optional:true}),
     rol: column.text({optional: true})
   }
 })

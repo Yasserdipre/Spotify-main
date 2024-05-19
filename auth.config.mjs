@@ -2,8 +2,10 @@ import { defineConfig } from "auth-astro";
 import Twitch from "@auth/core/providers/twitch"
 import Google from "@auth/core/providers/google"
 import Github from "@auth/core/providers/github"
-import { db, Users, Sessions, VerificationTokens, VerificationTokens, and, eq } from "astro:db";
+import { db, Users, Sessions, VerificationTokens, VerificationTokens, and, eq, like } from "astro:db";
 import { randomUUID } from "node:crypto";
+import bcrypt from 'bcrypt';
+import CredentialsProvider from "@auth/core/providers/credentials";
 
 export default defineConfig({
     providers: [
@@ -19,6 +21,20 @@ export default defineConfig({
         Github({
             clientId: import.meta.env.GITHUB_CLIENT_ID,
             clientSecret: import.meta.env.GITHUB_CLIENT_SECRET
+        }),
+        CredentialsProvider({
+            name: 'Credentials',
+            credentials: {
+                email: { label: "Email", type: "text" },
+                password: { label: "Password", type: "password" }
+            },
+            authorize: async (credentials) => {
+                const user = await db.select().from(Users).where(eq(Users.email, credentials.email));
+                if (user.length > 0 && bcrypt.compareSync(credentials.password, user[0].password)) {
+                    return { id: user[0].id, name: user[0].name, email: user[0].email };
+                }
+                return null;
+            }
         })
     ],
      callbacks: {
