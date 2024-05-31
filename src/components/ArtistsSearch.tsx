@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 const ArtistsSearch = ({ searchQuery, setCurrentMusic, setIsPlaying }) => {
     const [artistResult, setArtitsResult] = useState([]);
 
+
     const handleButtonClick = (album, index) => {
         fetch(`/api/get-info-playlist.json?id=${album.albumId}`)
             .then(res => res.json())
@@ -29,6 +30,7 @@ const ArtistsSearch = ({ searchQuery, setCurrentMusic, setIsPlaying }) => {
 
                 if (Array.isArray(data)) {
                     setArtitsResult(data);
+                    console.log(data)
                 } else {
                     setArtitsResult([]);
                 }

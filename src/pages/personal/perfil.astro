@@ -1,26 +1,59 @@
 ---
 import { getSession } from "auth-astro/server";
-const session = await getSession(Astro.request);
 import Layout from "@/layouts/Layout.astro";
+import { db, Users, eq, and } from "astro:db";
+
+async function getUserImage(session : any) {
+  if (!session?.user?.name || !session?.user?.email) {
+    throw new Error("Invalid session data");
+  }
+
+  const userImage = await db
+    .select()
+    .from(Users)
+    .where(
+      and(
+        eq(Users.name, session.user.name),
+        eq(Users.email, session.user.email)
+      )
+    );
+
+  return userImage;
+}
+
+const session = await getSession(Astro.request);
+let userImage;
+
+if (session) {
+  try {
+    if (session.user?.image) {
+      userImage = session.user.image;
+    } else {
+      userImage = await getUserImage(session);
+      if (userImage) {
+        console.log(userImage);
+      }
+    }
+  } catch (error) {
+    console.error("Error fetching user image:", error);
+  }
+}
 ---
 
 <Layout title="Spotify Clone">
-    <div>
-        <div class="flex justify-center">
-            <div class="mt-12">
-                <picture>
-                    <img src={session?.user?.image} alt="perfilImage.jpg" class="rounded-full w-[250px]" srcset="">
-                </picture>
-                <h3 class="text-center mt-3">{session?.user?.name}</h3>
-            </div>
-        </div>
+  <div>
+    <div class="flex justify-center">
+      <div class="mt-12">
+        <picture>
+          <img
+            src={userImage}
+            alt="perfilImage.jpg"
+            class="rounded-full w-[200px]"
+            srcset=""
+          />
+        </picture>
+        <h3 class="text-center mt-3">{session?.user?.name}</h3>
+      </div>
     </div>
+  </div>
 </Layout>
-
-
-
-
-
-
-
-

@@ -45,7 +45,11 @@ const Users = defineTable ({
     name: column.text(),
     email: column.text(),
     image: column.text({optional:true}),
-    rol: column.text({optional: true})
+    rol: column.text({optional: true}),
+    playlistAdd: column.text({optional:true}),
+    albumnsAdd: column.text({optional:true}),
+    artitsAdd: column.text({optional: true}),
+    songAdd: column.text({optional: true}),
   }
 })
 

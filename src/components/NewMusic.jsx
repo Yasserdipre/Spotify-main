@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import axios from "axios";
+import LoadingSpinner from "./LoadingSpinner";
 
 const UploadMusicForm = () => {
   const [formType, setFormType] = useState("");
+  
 
   const toggleFormType = (type) => {
     setFormType((prevType) => (prevType === type ? "" : type));
@@ -54,8 +56,13 @@ const UploadMusicForm = () => {
 const ArtistForm = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async () => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
     const formData = new FormData();
     formData.append(
       "artistName",
@@ -132,6 +139,7 @@ const ArtistForm = () => {
           </div>
         </div>
         <div className="flex justify-center w-full">
+        {!loading && (
           <button
             type="button"
             className="text-center w-[48rem] rounded-sm mt-5 p-5 bg-stone-400 hover:bg-stone-400/40"
@@ -139,6 +147,8 @@ const ArtistForm = () => {
           >
             Crear Artista
           </button>
+          )}
+          {loading && <LoadingSpinner/>}
         </div>
       </form>
     </>
@@ -151,6 +161,7 @@ const AlbumForm = () => {
   const [selectedArtist, setSelectedArtist] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleSelectChange = (event) => {
     const selectedValue = event.target.value;
@@ -174,6 +185,10 @@ const AlbumForm = () => {
   };
 
   const handleSubmit = async () => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
     const formData = new FormData();
     formData.append(
       "albumTitle",
@@ -276,6 +291,7 @@ const AlbumForm = () => {
         </div>
 
         <div className="flex justify-center w-full">
+        {!loading && (
           <button
             type="button"
             className="text-center w-[48rem] rounded-sm mt-5 p-5 bg-stone-400 hover:bg-stone-400/40"
@@ -283,6 +299,8 @@ const AlbumForm = () => {
           >
             Crear Album
           </button>
+          )}
+          {loading && <LoadingSpinner/>}
         </div>
       </form>
     </>
@@ -297,6 +315,7 @@ const SongForm = () => {
   const [albums, setAlbums] = useState([]); // Nuevo estado para almacenar los álbumes
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleSelectChange = async (event) => {
     const selectedValue = event.target.value;
@@ -334,6 +353,10 @@ const SongForm = () => {
   };
 
   const handleSubmit = async () => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
     const formData = new FormData();
     formData.append(
       "titleSong",
@@ -459,13 +482,16 @@ const SongForm = () => {
           </div>
         </div>
         <div className="flex justify-center w-full">
-          <button
+          {!loading && (
+            <button
             type="button"
             className="text-center w-[48rem] rounded-sm mt-5 p-5 bg-stone-400 hover:bg-stone-400/40"
             onClick={handleSubmit}
           >
             Crear Canción
           </button>
+          )}
+          {loading && <LoadingSpinner/>}
         </div>
       </form>
     </>

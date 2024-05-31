@@ -7,8 +7,7 @@ const session = await getSession(Astro.request);
 import Twitch from "@/icons/Twitch.astro";
 import Google from "@/icons/Google.astro";
 import Github from "@/icons/Github.astro";
-import LoginForm from "@/components/LoginForm"
-
+import LoginForm from "@/components/LoginForm";
 
 interface Props {
   title: string;
@@ -56,36 +55,39 @@ const { title } = Astro.props;
               Iniciar Sesión
             </div>
 
-
             <div class="flex gap-4 justify-center my-3">
               <div class="flex mt-2">
-              <button
-                class="border border-purple-600 p-3  hover:bg-purple-600"
-                id="loginTwitch"
-                type="button"
-              >
-                <Twitch />
-              </button>
+                <button
+                  class="border border-purple-600 p-3  hover:bg-purple-600"
+                  id="loginTwitch"
+                  type="button"
+                >
+                  <Twitch />
+                </button>
+              </div>
+
+              <div class="flex mt-2">
+                <button
+                  class="border border-cyan-500 p-3 hover:bg-cyan-500"
+                  id="loginGoogle"
+                  type="button"
+                >
+                  <Google />
+                </button>
+              </div>
+
+              <div class="flex mt-2">
+                <button
+                  class="border border-gray-400 p-3 hover:bg-gray-400"
+                  id="loginGithub"
+                  type="button"
+                >
+                  <Github />
+                </button>
+              </div>
             </div>
 
-            <div class="flex mt-2">
-              <button
-                class="border border-cyan-500 p-3 hover:bg-cyan-500"
-                id="loginGoogle"
-                type="button"
-              >
-                <Google />
-              </button>
-            </div>
-
-            <div class="flex mt-2">
-              <button class="border border-gray-400 p-3 hover:bg-gray-400" id="loginGithub" type="button">
-                <Github />
-              </button>
-            </div>
-            </div>
-
-            <LoginForm client:load/>
+            <LoginForm client:load />
           </div>
         </div>
       )
@@ -148,17 +150,22 @@ const { title } = Astro.props;
         font-display: swap;
       }
 
-      .withot-Google-styles input:-webkit-autofill,
-input:-webkit-autofill:hover, 
-input:-webkit-autofill:focus {
-    -webkit-box-shadow: 0 0 0px 1000px rgb(63 63 70 / var(--tw-bg-opacity)) inset;
-    color: white;
-}
+      .accnt-color:hover{
+        background-color: rgb(75 85 99);
+      }
 
-.withot-Google-styles input:-webkit-autofill {
-    -webkit-text-fill-color: #ffffff;
-    border-radius: 2px;
-}
+      .withot-Google-styles input:-webkit-autofill,
+      input:-webkit-autofill:hover,
+      input:-webkit-autofill:focus {
+        -webkit-box-shadow: 0 0 0px 1000px rgb(63 63 70 / var(--tw-bg-opacity))
+          inset;
+        color: white;
+      }
+
+      .withot-Google-styles input:-webkit-autofill {
+        -webkit-text-fill-color: #ffffff;
+        border-radius: 2px;
+      }
     </style>
 
     <script>
@@ -175,12 +182,12 @@ input:-webkit-autofill:focus {
       }
       if ($loginGoogle) {
         $loginGoogle.onclick = () => {
-          signIn("google")
+          signIn("google");
         };
       }
       if ($loginGithub) {
         $loginGithub.onclick = () => {
-          signIn("github")
+          signIn("github");
         };
       }
     </script>

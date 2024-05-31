@@ -11,6 +11,13 @@ export async function POST({ request }: { request: any }) {
     const hashedPassword = bcrypt.hashSync(password, 10);
     console.log(hashedPassword);
 
+    const existingUser = await db.select().from(Users).where(like(Users.name, name));
+    if (existingUser.length > 0) {
+      if (existingUser && bcrypt.compareSync(password, existingUser[0].password)) {
+        return new Response('Invalid credentials', { status: 401 });
+      } 
+    }
+
     try {
       await db.insert(Users).values({
         id: randomUUID(),

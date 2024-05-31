@@ -115,7 +115,7 @@ export const AlbumnData: Albumn[] = [
     },
     artistId: "",
     tipo: "Album",
-    genre: "Nu Metal"
+    genre: "Nu-Metal"
   },
   {
     id: "",
