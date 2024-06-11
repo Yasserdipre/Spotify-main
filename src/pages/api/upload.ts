@@ -1,94 +1,102 @@
-import fs from 'fs';
+import ytdl from 'ytdl-core';
+import { createWriteStream, unlinkSync, existsSync, mkdirSync } from 'fs';
+import { promisify } from 'util';
 import path from 'path';
-import { Albumns, Songs, Artists, db, eq } from "astro:db"; 
-import { randomUUID } from "node:crypto";
+import { Albumns, Songs, Artists, db, eq } from 'astro:db';
+import { randomUUID } from 'crypto';
 import { getArtistsId, getSongId, getAlbumnId } from 'db/querys';
 import { parseFile } from 'music-metadata';
 
-export async function POST({ request }: { request: any }) {
-  const formData = await request.formData();
-  const titleSong = formData.get('titleSong');
-  const imageSong = formData.get('imageSong');
-  const artistsSong = formData.get('artistsSong');
-  const albumSong = formData.get('albumSong');
-  const file = formData.get('file');
-  console.log(file)
-  
-  if (!artistsSong || !albumSong) {
-    return new Response('Artist and album are required', { status: 400 });
-  }
+const unlinkAsync = promisify(unlinkSync);
 
-  // Build the base directory path
-  const baseDir = path.join(process.cwd(), 'public', 'music');
-  let musicDir = path.join(baseDir, artistsSong, albumSong);
+export async function POST({ request } : {request : any}) {
+  try {
+    const formData = await request.formData();
+    const url = formData.get('url');
+    const titleSong = formData.get('titleSong');
+    const imageSong = formData.get('imageSong');
+    const artistsSong = formData.get('artistsSong');
+    const albumSong = formData.get('albumSong');
+    console.log(url, titleSong, artistsSong, albumSong)
 
-  // Check if artist and album directories exist
-  if (!fs.existsSync(musicDir)) {
-    return new Response('Artist or album directory does not exist', { status: 400 });
-  }
+    if (!url || !titleSong || !artistsSong || !albumSong) {
+      console.log("ok")
+      return new Response(JSON.stringify({ error: 'URL, titleSong, artistsSong, and albumSong are required' }), { status: 400 });
+    }
 
-  // If titleSong and file are provided, save the file
-  if (titleSong && file) {
-    const filePath = path.join(musicDir, `${titleSong}.mp3`);
+    const info = await ytdl.getInfo(url);
+    const format = ytdl.chooseFormat(info.formats, { quality: 'highestaudio' });
+    console.log(format)
+    const fileName = `${titleSong}.mp3`;
+    const baseDir = path.join(process.cwd(), 'public', 'music');
+    const musicDir = path.join(baseDir, artistsSong, albumSong);
+    
+    if (!existsSync(musicDir)) {
+      mkdirSync(musicDir, { recursive: true });
+    }
+    
+    const filePath = path.join(musicDir, fileName);
 
-    // Check if the song file already exists
-    if (fs.existsSync(filePath)) {
+    if (existsSync(filePath)) {
       return new Response('File already exists', { status: 400 });
     }
 
-    const arrayBuffer = await file.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
+    await new Promise((resolve, reject) => {
+      ytdl(url, { format })
+        .pipe(createWriteStream(filePath))
+        .on('finish', resolve)
+        .on('error', reject);
+    });
 
-    fs.writeFileSync(filePath, buffer);
-    try {
-      const metadata = await parseFile(filePath);
-      const durationTime = metadata.format.duration;
-      const duration = convertDurationToString(durationTime)
-      console.log(durationTime)
-      const existingArtist = await getArtistsId({principal: artistsSong})
-      const existingAlbum = await getAlbumnId(albumSong,{principal: artistsSong})
-      const existingSong = await getSongId(titleSong, existingArtist)
-      console.log(existingSong)
-    
-      if (existingSong) {
-        // Update existing artist
-        await db.update(Songs)
-          .set({
-            title: titleSong,
-            image: imageSong,
-            artists: {principal : artistsSong},
-            artistId: existingArtist,
-            duration: duration
-          })
-          .where(eq(Songs.artistId, existingArtist));
-      } else {
-        // Insert new artist
-        await db.insert(Songs).values({
-          id: randomUUID(),
+    const durationTime = info.videoDetails.lengthSeconds;
+    const duration = convertDurationToString(durationTime);
+    const existingArtist = await getArtistsId({ principal: artistsSong });
+    const existingAlbum = await getAlbumnId(albumSong, { principal: artistsSong });
+    const existingSong = await getSongId(titleSong, existingArtist);
+
+    if (existingSong) {
+      await db.update(Songs)
+        .set({
           title: titleSong,
-          tipo: "Cancion",
-          album: albumSong,
           image: imageSong,
-          albumId: existingAlbum,
-          artists: {principal : artistsSong},
+          artists: { principal: artistsSong },
           artistId: existingArtist,
           duration: duration
-      })
-      }
-} catch (error) {
-  console.error("Error insertando la Canción:", error);
-}
-    return new Response('File uploaded successfully', { status: 200 });
-  } else if (titleSong || file) {
-    return new Response('Both titleSong and file are required', { status: 400 });
+        })
+        .where(eq(Songs.artistId, existingArtist));
+    } else {
+      await db.insert(Songs).values({
+        id: randomUUID(),
+        title: titleSong,
+        tipo: 'Cancion',
+        album: albumSong,
+        image: imageSong,
+        albumId: existingAlbum,
+        artists: { principal: artistsSong },
+        artistId: existingArtist,
+        duration: duration
+      });
+    }
+
+    const headers = new Headers();
+    headers.set('Content-Type', 'audio/mpeg');
+    headers.set('Content-Disposition', `attachment; filename="${info.videoDetails.title}.mp3"`);
+
+    return new Response(filePath, { headers });
+
+  } catch (error) {
+    console.error('Error handling request:', error);
+    return new Response(JSON.stringify({ error: error.message }), {
+      status: 500,
+      headers: { 'content-type': 'application/json' },
+    });
   }
-
-  return new Response('No valid data provided', { status: 400 });
-
 }
 
-function convertDurationToString(durationInSeconds : number) {
+function convertDurationToString(durationInSeconds: any) {
+  durationInSeconds = Math.max(durationInSeconds - 1, 0); // Asegura que la duración no sea negativa
   const minutes = Math.floor(durationInSeconds / 60);
   const seconds = Math.floor(durationInSeconds % 60);
   return `${minutes}:${seconds.toString().padStart(2, '0')}`;
 }
+

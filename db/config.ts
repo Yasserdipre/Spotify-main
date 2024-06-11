@@ -45,11 +45,7 @@ const Users = defineTable ({
     name: column.text(),
     email: column.text(),
     image: column.text({optional:true}),
-    rol: column.text({optional: true}),
-    playlistAdd: column.text({optional:true}),
-    albumnsAdd: column.text({optional:true}),
-    artitsAdd: column.text({optional: true}),
-    songAdd: column.text({optional: true}),
+    rol: column.text({optional: true})
   }
 })
 
@@ -70,8 +66,38 @@ const VerificationTokens = defineTable({
   }
 })
 
+const AlbumnBiblioteca = defineTable({
+  columns: {
+    id: column.text({primaryKey: true}),
+    albumnId: column.text({references: () => Albumns.columns.id}),
+    artistId: column.text({references: () => Artists.columns.id}),
+    userId: column.text({references: () => Users.columns.id})
+
+  }
+})
+
+const ArtistsBiblioteca = defineTable({
+  columns: {
+    id: column.text({primaryKey: true}),
+    artistId: column.text({references: () => Artists.columns.id}),
+    name: column.text(),
+    userId: column.text({references: () => Users.columns.id})
+  }
+})
+
+const SongBiblioteca = defineTable({
+  columns: {
+    id: column.text({primaryKey: true}),
+    albumnId: column.text({references: () => Albumns.columns.id}),
+    artistId: column.text({references: () => Artists.columns.id}),
+    songId: column.text({references: () => Songs.columns.id}),
+    userId: column.text({references: () => Users.columns.id})
+  }
+})
+
+
 
 export default defineDb({
-  tables: {Songs, Albumns, Artists, Users, Sessions, VerificationTokens},
+  tables: {Songs, Albumns, Artists, Users, Sessions, VerificationTokens, AlbumnBiblioteca, ArtistsBiblioteca, SongBiblioteca},
 })
 

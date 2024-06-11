@@ -4,9 +4,20 @@ import TableComponent from "@/components/SongTable"
 import Layout from "../../layouts/Layout.astro"
 import { CardPlayButton } from "@/components/CardPlayButton";
 const { id } = Astro.params
-import {db, Albumns, Songs, Artists} from 'astro:db';
+import {db, Albumns, Songs, Artists, ArtistsBiblioteca, eq, and, Users} from 'astro:db';
 import { like } from "astro:db"
-
+import { getSession } from "auth-astro/server";
+const session = await getSession(Astro.request);
+import FollowArtistsButton from "@/components/FollowArtistsButton";
+const userId = await db.select({id : Users.id}).from(Users).where(and(eq(Users.name, session?.user.name), eq(Users.email, session?.user.email)))
+let state;
+const artistsBiblioteca = await db.select().from(ArtistsBiblioteca).where(and(eq(ArtistsBiblioteca.artistId, id), eq(ArtistsBiblioteca.userId, userId[0].id)))
+if(artistsBiblioteca.length > 0){
+  state = false
+}
+else(
+  state = true
+)
 const artists = await db.select().from(Artists).where(like(Artists.id, id))
 const albums = await db.select().from(Albumns).where(like(Albumns.artistId, id))
 const songs = await db.select().from(Songs).where(like(Songs.albumId, albums[0].id));
@@ -45,6 +56,7 @@ const songs = await db.select().from(Songs).where(like(Songs.albumId, albums[0].
 
     <div class="pl-6 pt-6">
       <CardPlayButton client:load id={id} size="large" followButt="seguir"/>
+      <FollowArtistsButton state={state} session={session}  client:load/>
     </div>
 
     <div class="relative z-10 px-6 pt-10"></div>

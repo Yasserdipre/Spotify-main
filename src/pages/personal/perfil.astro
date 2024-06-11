@@ -29,10 +29,8 @@ if (session) {
     if (session.user?.image) {
       userImage = session.user.image;
     } else {
-      userImage = await getUserImage(session);
-      if (userImage) {
-        console.log(userImage);
-      }
+      const image = await getUserImage(session);
+      userImage = image[0].image
     }
   } catch (error) {
     console.error("Error fetching user image:", error);

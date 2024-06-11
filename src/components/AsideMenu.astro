@@ -4,10 +4,21 @@ import HomeIcon from "@/icons/Home.astro"
 import SearchIcon from "@/icons/Search.astro"
 import SideMenuItem from "./SideMenuItem.astro"
 import SideMenuCard from "./SideMenuCard.astro"
-import {db, Albumns} from 'astro:db';
-const Albumn = await db.select().from(Albumns);
+import ListItemList from "./SideMenuItemList"
+import {db, Albumns, Users, and, eq, AlbumnBiblioteca, inArray} from 'astro:db';
+import { getSession } from "auth-astro/server";
+const session = await getSession(Astro.request);
+const userId = await db.select({id : Users.id}).from(Users).where(and(eq(Users.name, session?.user.name), eq(Users.email, session?.user.email)))
+const albumnId = await db.select({albumnId : AlbumnBiblioteca.albumnId}).from(AlbumnBiblioteca).where(eq(AlbumnBiblioteca.userId, userId[0].id))
+let Albumn;
 
-import { playlists } from "@/lib/data"
+if(albumnId.length > 0) {
+  Albumn = await db.select().from(Albumns).where(inArray(Albumns.id, albumnId.map(item => item.albumnId)));
+}
+else{
+  Albumn = await db.select().from(Albumns).limit(7);
+}
+
 ---
 
 <nav class="flex flex-col flex-1 gap-2">
@@ -31,7 +42,7 @@ import { playlists } from "@/lib/data"
         <LibraryIcon />
          Tu biblioteca
       </SideMenuItem>
-      {Albumn.map((Album) => <SideMenuCard AlbumData={Album} />)}
+      <ListItemList albums={Albumn} session ={session} client:load/>
     </ul>
   </div>
 </nav>

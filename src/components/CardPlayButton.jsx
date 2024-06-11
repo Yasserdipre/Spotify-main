@@ -2,7 +2,7 @@ import { Pause, Play } from "./Player"
 import { usePlayerStore } from '@/store/playerStore'
 import { useState } from "react"
 
-export function CardPlayButton ({ id, size = 'small', followButt }) {
+export function CardPlayButton ({ id, size = 'small' }) {
   const {
     currentMusic,
     isPlaying,
@@ -40,9 +40,7 @@ export function CardPlayButton ({ id, size = 'small', followButt }) {
       {isPlayingPlaylist ? <Pause className={iconClassName} /> : <Play className={iconClassName} />}
     </button>
 
-    {followButt !== undefined ? (
-      <button type="button" className="ml-5 border py-1 px-4 rounded-3xl text-base border-gray-100/[.25] hover:border-gray-100 hover:text-lg" onClick={()=> console.log("Hola")}>{followButt}</button>
-    ) : null}
+    
 
     </>
   )

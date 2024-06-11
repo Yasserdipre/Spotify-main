@@ -148,7 +148,7 @@ const ArtistForm = () => {
             Crear Artista
           </button>
           )}
-          {loading && <LoadingSpinner/>}
+          {loading && <LoadingSpinner size= "w-16 h-16" />}
         </div>
       </form>
     </>
@@ -312,7 +312,7 @@ const SongForm = () => {
   const [selectedAlbum, setSelectedAlbum] = useState("");
   const [artistValue, setArtistValue] = useState("");
   const [artists, setArtists] = useState([]);
-  const [albums, setAlbums] = useState([]); // Nuevo estado para almacenar los álbumes
+  const [albums, setAlbums] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [loading, setLoading] = useState(false);
@@ -325,7 +325,7 @@ const SongForm = () => {
       try {
         const response = await axios.get(`/api/get-albums?artist=${selectedValue}`);
         console.log("Respuesta de la API de álbumes:", response.data);
-        setAlbums(response.data); // Actualiza el estado con los álbumes obtenidos
+        setAlbums(response.data);
       } catch (error) {
         console.error("Error al obtener los álbumes:", error);
       }
@@ -341,7 +341,7 @@ const SongForm = () => {
 
   const handleArtistChange = async (event) => {
     const artistName = event.target.value;
-    setArtistValue(artistName); // Actualizar el estado con el nuevo valor del artista
+    setArtistValue(artistName);
 
     try {
       const response = await axios.get(`/api/get-artists?title=${artistName}`);
@@ -354,28 +354,14 @@ const SongForm = () => {
 
   const handleSubmit = async () => {
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 1000);
     const formData = new FormData();
-    formData.append(
-      "titleSong",
-      document.getElementsByName("titleSong")[0].value
-    );
-    formData.append(
-      "imageSong",
-      document.getElementsByName("imageSong")[0].value
-    );
-    formData.append(
-      "artistsSong",
-      selectedArtist
-    );
-    formData.append(
-      "albumSong",
-      document.getElementsByName("albumSong")[0].value
-    );
-    formData.append("file", document.getElementById("file").files[0]);
-    console.log(formData.get("artistsSong"));
+    formData.append("url", document.getElementsByName("url")[0].value);
+    formData.append("titleSong", document.getElementsByName("titleSong")[0].value);
+    formData.append("imageSong", document.getElementsByName("imageSong")[0].value);
+    formData.append("artistsSong", selectedArtist);
+    formData.append("albumSong", document.getElementsByName("albumSong")[0].value);
+    //formData.append("file", document.getElementById("file").files[0]);
+
     try {
       const response = await axios.post("/api/upload", formData);
       console.log("Canción subida con éxito", response);
@@ -389,13 +375,15 @@ const SongForm = () => {
         setErrorMessage("Error al insertar la Canción");
       }
       setSuccessMessage("");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <>
       <form>
-      {errorMessage && (
+        {errorMessage && (
           <div className="flex justify-center w-full">
             <div className="bg-red-700 w-[49%] text-white  mb-5 rounded-sm text-center p-2 mt-2">
               {errorMessage}
@@ -412,6 +400,7 @@ const SongForm = () => {
         )}
         <div className="flex justify-center w-full">
           <div className="inline-grid grid-cols-4 gap-4 w-[49%]">
+            
             <label className="mt-2">Título de la Canción:</label>
             <input
               name="titleSong"
@@ -469,33 +458,32 @@ const SongForm = () => {
         <div className="flex justify-center w-full mt-3">
           <div className="inline-grid grid-cols-1 gap-4 w-[69%]">
             <div className="flex justify-center">
-              <label className="mt-2">Añadir la Canción:</label>
-              <input
-                name="file"
-                id="file"
-                className="py-2 ml-11 w-[55%] bg-zinc-600 rounded-md pl-1"
-                type="file"
-                accept="audio/*"
-                required
-              />
+            <label className="mt-2 ml-4">URL de la Canción:</label>
+            <input
+              name="url"
+              className="py-2 ml-11 w-[55%] bg-zinc-600 rounded-md pl-1"
+              type="text"
+              required
+            />
             </div>
           </div>
         </div>
         <div className="flex justify-center w-full">
           {!loading && (
             <button
-            type="button"
-            className="text-center w-[48rem] rounded-sm mt-5 p-5 bg-stone-400 hover:bg-stone-400/40"
-            onClick={handleSubmit}
-          >
-            Crear Canción
-          </button>
+              type="button"
+              className="text-center w-[48rem] rounded-sm mt-5 p-5 bg-stone-400 hover:bg-stone-400/40"
+              onClick={handleSubmit}
+            >
+              Crear Canción
+            </button>
           )}
-          {loading && <LoadingSpinner/>}
+          {loading && <LoadingSpinner />}
         </div>
       </form>
     </>
   );
 };
+
 
 export default UploadMusicForm;

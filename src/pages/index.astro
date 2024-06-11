@@ -1,21 +1,72 @@
 ---
-import Layout from "../layouts/Layout.astro"
-import PlayListItemCard from "@/components/PlayListItemCard.astro"
-import Greeting from "@/components/Greeting.svelte"
-import {db, Albumns, eq, Artists} from 'astro:db';
-import ArtistsInicio from "@/components/ArtistInicio"
+import Layout from "../layouts/Layout.astro";
+import PlayListItemCard from "@/components/PlayListItemCard.astro";
+import Greeting from "@/components/Greeting.svelte";
+import { db, Albumns, eq, Artists, inArray, Users, and, ArtistsBiblioteca } from 'astro:db';
+import ArtistsInicio from "@/components/ArtistInicio";
 import User from "@/components/User.astro";
+import { getSession } from "auth-astro/server";
+import { sql } from "astro:db";
+
+const session = await getSession(Astro.request);
+
+
+// Consultas de géneros musicales
 const Nu_Metal = await db.select().from(Albumns).where(eq(Albumns.genre, "Nu-Metal"));
 const Lo_FI = await db.select().from(Albumns).where(eq(Albumns.genre, "Lo-Fi"));
 const Bachata = await db.select().from(Albumns).where(eq(Albumns.genre, "Bachata"));
 const Jazz = await db.select().from(Albumns).where(eq(Albumns.genre, "Jazz"));
-const ArtistsData = await db.select().from(Artists).limit(6)
-/*
-Albumn.map(album => {console.log(album)})
-*/
 
 
+
+let ArtistsData;
+let textArtist;
+
+if (session) {
+  // Obtener el userId del usuario actual
+const userId = await db
+    .select({ id: Users.id })
+    .from(Users)
+    .where(
+        and(
+            eq(Users.name, session?.user.name),
+            eq(Users.email, session?.user.email)
+        )
+    );
+  // Obtener los artistas de la biblioteca del usuario
+const ArtistDataQuery = await db
+    .select({ artistId: ArtistsBiblioteca.artistId })
+    .from(ArtistsBiblioteca)
+    .where(eq(ArtistsBiblioteca.userId, userId[0].id))
+    .limit(7);
+
+if (ArtistDataQuery) {
+    const artistIds = ArtistDataQuery.map(data => data.artistId);
+
+    if (artistIds.length > 0) {
+        // Asegúrate de que inArray esté importado y se use correctamente
+        ArtistsData = await db
+            .select()
+            .from(Artists)
+            .where(inArray(Artists.id, artistIds));
+        textArtist = "Tus Artistas Favoritos"
+        
+
+        
+    } else {
+        ArtistsData = await db.select().from(Artists).limit(7).orderBy(sql.raw("RANDOM()"));
+        textArtist = "Algunos que Conocer"
+      }
+} else {
+    console.log("No se encontraron artistas en ArtistDataQuery.");
+}
+}
+else {
+  ArtistsData = null
+  
+}
 ---
+
 
 <Layout title="Spotify Clone">
   <div
@@ -46,7 +97,7 @@ Albumn.map(album => {console.log(album)})
       </div>
 
       <div class="relative mt-3 z-20 max-h-72">
-        <h2 class="relative top-4 left-3 text-2xl">Tus Artistas Favoritos</h2>
+        <h2 class="relative top-4 left-3 text-2xl">{textArtist}</h2>
         <ArtistsInicio artistData={ArtistsData} client:load/>
       </div>
 

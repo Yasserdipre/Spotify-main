@@ -45,6 +45,7 @@ const { title } = Astro.props;
               client:load
               transition:name="media-player"
               transition:persist
+              session={session}
             />
           </footer>
         </div>
@@ -150,7 +151,7 @@ const { title } = Astro.props;
         font-display: swap;
       }
 
-      .accnt-color:hover{
+      .accnt-color:hover {
         background-color: rgb(75 85 99);
       }
 

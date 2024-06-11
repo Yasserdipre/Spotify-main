@@ -5,18 +5,83 @@ import { MailEdit } from "@/icons/Mail";
 import { ImageEdit } from "@/icons/Image";
 import { Next } from "@/icons/Next";
 import { Back } from "@/icons/Back";
+import LoadingSpinner from "./LoadingSpinner";
+import axios from "axios";
 
-const AccountSettings = () => {
+const AccountSettings = ({session} : {session : any}) => {
   const [activeSection, setActiveSection] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+  console.log(session.user)
 
   const handleBack = () => {
     setActiveSection("");
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    // Manejar la lógica de envío aquí
-    console.log("Formulario enviado");
+  const handleSubmit = async (process : any) => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+    const formData = new FormData();
+    if (process === "passChange") {
+      formData.append(
+        "oldPassword",
+        document.getElementById("oldpassChange")?.value
+      );
+      formData.append(
+        "newPassword",
+        document.getElementById("newpassChange")?.value
+      );
+      formData.append(
+        "session",
+        JSON.stringify(session.user)
+      )
+      formData.append(
+        "process",
+        "changePassword"
+      )
+
+    }
+    else if (process === "userChange") {
+      formData.append(
+        "newUser",
+        document.getElementById("newUser")?.value
+      );
+      formData.append(
+        "oldPassword",
+        document.getElementById("oldPassword")?.value
+      );
+      formData.append(
+        "session",
+        JSON.stringify(session.user)
+      )
+      formData.append(
+        "process",
+        "userChange"
+      )
+    }
+    else if (process === "emailChange") {
+      console.log("Cambio de email")
+    }
+    else if (process === "imageChange") {
+      console.log("Cambio de imagen")
+    }
+    try {
+      const response = await axios.post("/api/auth/update-password", formData);
+      console.log("Peticion Realizada", response);
+      setSuccessMessage("Cambiado correctamente");
+      setErrorMessage("");
+    } catch (error) {
+      console.error("Error haciendo petición:", error);
+      if (error.response && error.response.status === 400) {
+        setErrorMessage("Contraseña incorrecta");
+      } else {
+        setErrorMessage("Error al cambiar los datos");
+      }
+      setSuccessMessage("");
+    }
   };
 
   return (
@@ -89,54 +154,104 @@ const AccountSettings = () => {
 
       {activeSection === "password" && (
         <form className="space-y-4 px-2">
+          {errorMessage && (
+          <div className="flex justify-center w-full">
+            <div className="bg-red-700 w-[100%] text-white  mb-5 rounded-sm text-center p-2 mt-2">
+              {errorMessage}
+            </div>
+          </div>
+        )}
+
+        {successMessage && (
+          <div className="flex justify-center w-full">
+            <div className="bg-green-500 w-[100%] text-white mb-5 rounded-sm text-center p-2 mt-2">
+              {successMessage}
+            </div>
+          </div>
+        )}
           <input
             type="password"
+            id="oldpassChange"
             placeholder="Contraseña Actual"
             required
             className="w-full p-2 bg-zinc-700 rounded-sm"
           />
           <input
             type="password"
+            id="oldpassChangeSecond"
             placeholder="Confirme Contraseña"
             required
             className="w-full p-2 bg-zinc-700 rounded-sm"
           />
           <input
             type="password"
+            id="newpassChange"
             placeholder="Nueva Contraseña"
             required
             className="w-full p-2 bg-zinc-700 rounded-sm"
           />
+          
+          <div className="flex justify-center">
+          {!loading && (
           <button
             type="button"
             className="w-full bg-slate-700 hover:bg-black text-white py-2 rounded"
+            onClick={() => handleSubmit("passChange")}
           >
             Enviar
           </button>
+          )}
+
+          {loading && <LoadingSpinner  size= "w-8 h-8"/>}
+          </div>
         </form>
       )}
 
       {activeSection === "username" && (
         <form className="space-y-4 px-2">
+          {errorMessage && (
+          <div className="flex justify-center w-full">
+            <div className="bg-red-700 w-[100%] text-white  mb-5 rounded-sm text-center p-2 mt-2">
+              {errorMessage}
+            </div>
+          </div>
+        )}
+
+        {successMessage && (
+          <div className="flex justify-center w-full">
+            <div className="bg-green-500 w-[100%] text-white mb-5 rounded-sm text-center p-2 mt-2">
+              {successMessage}
+            </div>
+          </div>
+        )}
           <input
             type="text"
+            id="newUser"
             placeholder="Nuevo Usuario"
             required
             className="w-full p-2 bg-zinc-700 rounded-sm"
           />
           <input
             type="password"
+            id="oldPassword"
             placeholder="Confirme con la Contraseña"
             required
             autoComplete="off"
             className="w-full p-2 bg-zinc-700 rounded-sm"
           />
+          <div className="flex justify-center">
+          {!loading && (
           <button
             type="submit"
             className="w-full bg-slate-700 hover:bg-black text-white py-2 rounded"
+            onClick={() => handleSubmit("userChange")}
           >
             Enviar
           </button>
+          )}
+
+          {loading && <LoadingSpinner  size= "w-8 h-8"/>}
+          </div>
         </form>
       )}
 
@@ -155,12 +270,19 @@ const AccountSettings = () => {
             required
             className="w-full p-2 bg-zinc-700 rounded-sm"
           />
+          <div className="flex justify-center">
+          {!loading && (
           <button
             type="button"
             className="w-full bg-slate-700 hover:bg-black text-white py-2 rounded"
+            onClick={() => handleSubmit("emailChange")}
           >
             Enviar
           </button>
+          )}
+
+          {loading && <LoadingSpinner  size= "w-8 h-8"/>}
+          </div>
         </form>
       )}
 
@@ -179,12 +301,19 @@ const AccountSettings = () => {
             required
             className="w-full p-2 bg-zinc-700 rounded-sm"
           />
+          <div className="flex justify-center">
+          {!loading && (
           <button
             type="button"
             className="w-full bg-slate-700 hover:bg-black text-white py-2 rounded"
+            onClick={() => handleSubmit("imageChange")}
           >
             Enviar
           </button>
+          )}
+
+          {loading && <LoadingSpinner  size= "w-8 h-8"/>}
+          </div>
         </form>
       )}
     </div>
