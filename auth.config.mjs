@@ -2,7 +2,7 @@ import { defineConfig } from "auth-astro";
 import Twitch from "@auth/core/providers/twitch"
 import Google from "@auth/core/providers/google"
 import Github from "@auth/core/providers/github"
-import { db, Users, Sessions, VerificationTokens, VerificationTokens, and, eq, like } from "astro:db";
+import { db, Users, Sessions, VerificationTokens, and, eq, like } from "astro:db";
 import { randomUUID } from "node:crypto";
 import bcrypt from 'bcrypt';
 import CredentialsProvider from "@auth/core/providers/credentials";

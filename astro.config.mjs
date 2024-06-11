@@ -6,11 +6,10 @@ import vercel from "@astrojs/vercel/serverless";
 import vue from "@astrojs/vue";
 import db from "@astrojs/db";
 import auth from "auth-astro";
-import MyIntegration from 'astro-db-integration';
 
 // https://astro.build/config
 export default defineConfig({
-  integrations: [tailwind(), svelte(), react(), vue(), db(), auth(), MyIntegration()],
+  integrations: [tailwind(), svelte(), react(), vue(), db(), auth()],
   output: 'server',
   adapter: vercel(),
   devToolbar: {
