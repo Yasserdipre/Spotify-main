@@ -1,0 +1,28 @@
+---
+import { db, Users, like } from "astro:db";
+import { getSession } from "auth-astro/server";
+const session = await getSession(Astro.request);
+const rol = await db.select({rol: Users.rol}).from(Users).where(like(Users.name, session?.user?.name))
+console.log(rol)
+let rolData;
+if(rol.length > 0) {
+  rolData = rol[0].rol
+}
+else{
+  rolData = null
+} 
+import SignOutButton from "./AuthButtton";
+
+---
+
+
+
+
+      <SignOutButton session={session} rol={rolData} client:load/>
+
+  
+
+  
+  
+  
+  

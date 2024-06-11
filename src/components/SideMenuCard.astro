@@ -1,14 +1,12 @@
 ---
-import type { Playlist } from "@/lib/data"
-
+import type { Albumn } from "../lib/dataType";
 interface Props {
-  playlist: Playlist
+  AlbumData: Albumn
 }
+const { AlbumData } = Astro.props
+const { id, cover, title, artists, color } = AlbumData
 
-const { playlist } = Astro.props
-const { id, cover, title, artists, color } = playlist
-
-const artistsString = artists.join(", ")
+const artistsString = artists.principal
 ---
 
 <a

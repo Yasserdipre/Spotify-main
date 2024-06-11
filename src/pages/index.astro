@@ -1,9 +1,72 @@
 ---
-import Layout from "../layouts/Layout.astro"
-import PlayListItemCard from "@/components/PlayListItemCard.astro"
-import { playlists } from "@/lib/data"
-import Greeting from "@/components/Greeting.svelte"
+import Layout from "../layouts/Layout.astro";
+import PlayListItemCard from "@/components/PlayListItemCard.astro";
+import Greeting from "@/components/Greeting.svelte";
+import { db, Albumns, eq, Artists, inArray, Users, and, ArtistsBiblioteca } from 'astro:db';
+import ArtistsInicio from "@/components/ArtistInicio";
+import User from "@/components/User.astro";
+import { getSession } from "auth-astro/server";
+import { sql } from "astro:db";
+
+const session = await getSession(Astro.request);
+
+
+// Consultas de géneros musicales
+const Nu_Metal = await db.select().from(Albumns).where(eq(Albumns.genre, "Nu-Metal"));
+const Lo_FI = await db.select().from(Albumns).where(eq(Albumns.genre, "Lo-Fi"));
+const Bachata = await db.select().from(Albumns).where(eq(Albumns.genre, "Bachata"));
+const Jazz = await db.select().from(Albumns).where(eq(Albumns.genre, "Jazz"));
+
+
+
+let ArtistsData;
+let textArtist;
+
+if (session) {
+  // Obtener el userId del usuario actual
+const userId = await db
+    .select({ id: Users.id })
+    .from(Users)
+    .where(
+        and(
+            eq(Users.name, session?.user.name),
+            eq(Users.email, session?.user.email)
+        )
+    );
+  // Obtener los artistas de la biblioteca del usuario
+const ArtistDataQuery = await db
+    .select({ artistId: ArtistsBiblioteca.artistId })
+    .from(ArtistsBiblioteca)
+    .where(eq(ArtistsBiblioteca.userId, userId[0].id))
+    .limit(7);
+
+if (ArtistDataQuery) {
+    const artistIds = ArtistDataQuery.map(data => data.artistId);
+
+    if (artistIds.length > 0) {
+        // Asegúrate de que inArray esté importado y se use correctamente
+        ArtistsData = await db
+            .select()
+            .from(Artists)
+            .where(inArray(Artists.id, artistIds));
+        textArtist = "Tus Artistas Favoritos"
+        
+
+        
+    } else {
+        ArtistsData = await db.select().from(Artists).limit(7).orderBy(sql.raw("RANDOM()"));
+        textArtist = "Algunos que Conocer"
+      }
+} else {
+    console.log("No se encontraron artistas en ArtistDataQuery.");
+}
+}
+else {
+  ArtistsData = null
+  
+}
 ---
+
 
 <Layout title="Spotify Clone">
   <div
@@ -12,10 +75,44 @@ import Greeting from "@/components/Greeting.svelte"
   >
     <!-- <PageHeader /> -->
 
-    <div class="relative z-10 px-6 pt-10">
-      <Greeting />
-      <div class="flex flex-wrap mt-6 gap-4">
-        {playlists.map((playlist) => <PlayListItemCard playlist={playlist} />)}
+    <div class="relative z-10 px-6 pt-10 pb-5">
+
+      <div class="flex justify-between items-start">
+        <Greeting />
+        <User />
+      </div>
+      <div class="mt-3">
+        <h2 class="relative top-4 left-3 text-2xl">Lo mejor del Nu-Metal</h2>
+        <div class="flex flex-wrap mt-6 gap-4">
+          {Nu_Metal.map((Nu_Metal_Data) => <PlayListItemCard AlbumData={Nu_Metal_Data} />)}
+        </div>
+      </div>
+
+
+      <div>
+        <h2 class="relative top-4 left-3 text-2xl">Disfruta de la Bachata</h2>
+        <div class="flex flex-wrap mt-6 gap-4">
+          {Bachata.map((Bachata_Data) => <PlayListItemCard AlbumData={Bachata_Data} />)}
+        </div>
+      </div>
+
+      <div class="relative mt-3 z-20 max-h-72">
+        <h2 class="relative top-4 left-3 text-2xl">{textArtist}</h2>
+        <ArtistsInicio artistData={ArtistsData} client:load/>
+      </div>
+
+      <div class="relative z-30 mt-2">
+        <h2 class="relative top-4 left-3 text-2xl">Sumerjete en el Lo-Fi</h2>
+        <div class="flex flex-wrap mt-6 gap-4">
+          {Lo_FI.map((Lo_FI_Data) => <PlayListItemCard AlbumData={Lo_FI_Data} />)}
+        </div>
+      </div>
+
+      <div>
+        <h2 class="relative top-4 left-3 text-2xl">Siente el Jazz</h2>
+        <div class="flex flex-wrap mt-6 gap-4">
+          {Jazz.map((Jazz_Data) => <PlayListItemCard AlbumData={Jazz_Data} />)}
+        </div>
       </div>
 
       <div
@@ -27,3 +124,5 @@ import Greeting from "@/components/Greeting.svelte"
     <style></style>
   </div>
 </Layout>
+
+

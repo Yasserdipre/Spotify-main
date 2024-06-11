@@ -1,14 +1,28 @@
 ---
-import MusicsTable from "@/components/MusicsTable.astro"
+
 import TableComponent from "@/components/SongTable"
 import Layout from "../../layouts/Layout.astro"
 import { CardPlayButton } from "@/components/CardPlayButton"
-import { allPlaylists, songs } from "@/lib/data"
-
 const { id } = Astro.params
+import {db, Albumns, Songs, AlbumnBiblioteca, eq, Users} from 'astro:db';
+import { like, and } from "astro:db"
+import { getSession } from "auth-astro/server";
+const session = await getSession(Astro.request);
+const albums = await db.select().from(Albumns).where(like(Albumns.id, id))
+const songs = await db.select().from(Songs).where(like(Songs.albumId, id))
+const userId = await db.select({id : Users.id}).from(Users).where(and(eq(Users.name, session?.user.name), eq(Users.email, session?.user.email)))
+let state;
+const albumnBiblioteca = await db.select().from(AlbumnBiblioteca).where(and(eq(AlbumnBiblioteca.albumnId, id), eq(AlbumnBiblioteca.userId, userId[0].id)))
+if(albumnBiblioteca.length > 0){
+  state = false
+}
+else(
+  state = true
+)
+import AddBiblioteca from "@/components/AddBliblioteca";
+import duration from '@/components/TimeDuration'
+const time = duration(songs)
 
-const playlist = allPlaylists.find((playlist) => playlist.id === id)
-const playListSongs = songs.filter((song) => song.albumId === playlist?.albumId)
 ---
 
 <Layout title="Spotify Clone">
@@ -22,10 +36,10 @@ const playListSongs = songs.filter((song) => song.albumId === playlist?.albumId)
     <header class="flex flex-row gap-8 px-6 mt-12">
       <picture class="aspect-square w-52 h-52 flex-none">
         <img
-          src={playlist?.cover}
-          alt={`Cover of ${playlist?.title}`}
+          src={albums[0]?.cover}
+          alt={`Cover of ${albums[0]?.title}`}
           class="object-cover w-full h-full shadow-lg"
-          transition:name=`playlist ${playlist?.id} image`
+          transition:name=`playlist ${albums[0]?.id} image`
         />
       </picture>
 
@@ -33,19 +47,19 @@ const playListSongs = songs.filter((song) => song.albumId === playlist?.albumId)
         <h2 class="flex flex-1 items-end">Playlist</h2>
         <div>
           <h1 class="text-5xl font-bold block text-white">
-            {playlist?.title}
-            <span transition:name=`playlist ${playlist?.id} title`></span>
+            {albums[0]?.title}
+            <span transition:name=`playlist ${albums[0]?.id} title`></span>
           </h1>
         </div>
 
         <div class="flex-1 flex items-end">
           <div class="text-sm text-gray-300 font-normal">
-            <div transition:name=`playlist ${playlist?.id} artists`>
-              <span>{playlist?.artists.join(", ")}</span>
+            <div transition:name=`playlist ${albums[0]?.id} artists`>
+              <span><a href=`/artists/${albums[0].artistId}`>{albums[0]?.artists.principal}</a></span>
             </div>
             <p class="mt-1">
-              <span class="text-white">{playListSongs.length} canciones</span>,
-              3 h aproximadamente
+              <span class="text-white">{songs.length} canciones</span>,
+              {time} aproximadamente
             </p>
           </div>
         </div>
@@ -54,6 +68,7 @@ const playListSongs = songs.filter((song) => song.albumId === playlist?.albumId)
 
     <div class="pl-6 pt-6">
       <CardPlayButton client:load id={id} size="large" />
+      <AddBiblioteca state={state} session={session} client:load/>
     </div>
 
     <div class="relative z-10 px-6 pt-10"></div>
@@ -64,7 +79,7 @@ const playListSongs = songs.filter((song) => song.albumId === playlist?.albumId)
     </div>
 
     <section class="p-6">
-      <TableComponent client:load songs={playListSongs} />
+      <TableComponent client:load songs={songs} />
     </section>
   </div>
 </Layout>

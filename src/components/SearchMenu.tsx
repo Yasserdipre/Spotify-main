@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { usePlayerStore } from '@/store/playerStore';
 import SongSearch from "./SongSearch";
 import AlbumSearch from "./AlbumSearch";
+import ArtistsSearch from "./ArtistsSearch";
 
 const SearchMenu = () => {
     const [searchQuery, setSearchQuery] = useState("");
@@ -23,9 +24,10 @@ const SearchMenu = () => {
 
             if (Array.isArray(data)) {
                 setSearchResults(data);
+                console.log("Data: ", data);
             } else {
                 setSearchResults([]);
-                console.log(data);
+                console.log("Data: ", data);
             }
         } catch (error) {
             console.error("Error searching songs:", error);
@@ -62,6 +64,10 @@ const SearchMenu = () => {
             <AlbumSearch searchQuery={searchQuery}
                          setCurrentMusic={setCurrentMusic}
                          setIsPlaying={setIsPlaying} />
+
+            <ArtistsSearch searchQuery={searchQuery}
+                         setCurrentMusic={setCurrentMusic}
+                         setIsPlaying={setIsPlaying} />             
         </>
     );
 };
